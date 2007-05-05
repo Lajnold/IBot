@@ -5,7 +5,10 @@
 #include <ctime>
 #include <cstring>
 
+#include <boost/lexical_cast.hpp>
+
 #include "IRCSocket.h"
+#include "UserStats.h"
 
 namespace IRC
 {
@@ -15,6 +18,7 @@ namespace IRC
 		const std::string nickname;
 		const std::string channel;
 		const char command_char;
+		IRC::UserStats stats;
 		
 		typedef std::vector<std::string> message_list_type;
 		
@@ -113,8 +117,40 @@ namespace IRC
 			return std::string(str, str + std::strlen(str));
 		}
 		
+		std::string get_user(const message_list_type &input)
+		{
+			assert(is_privmsg(input));
+			
+			size_t pos = input[0].find("!");
+			return input[0].substr(1, pos - 1);
+		}
+		
+		unsigned int get_word_count_in_privmsg(const message_list_type &input)
+		{
+			assert(is_privmsg(input));
+			
+			return input.size() - 3;
+		}
+		
+		void update_user_word_count(const message_list_type &input)
+		{
+			assert(is_privmsg(input));
+			
+			std::string user = get_user(input);
+			unsigned int count = get_word_count_in_privmsg(input);
+			stats.increase_word_count(user, count);
+		}
+		
+		unsigned int get_user_word_count(const message_list_type &input)
+		{
+			std::string user = get_user(input);
+			return stats.get_word_count(user);
+		}
+		
 		void handle_privmsg(const message_list_type &input)
-		{			
+		{
+			update_user_word_count(input);
+			
 			if(is_command(input))
 			{
 				std::string command = get_command(input);
@@ -135,6 +171,12 @@ namespace IRC
 				{
 					std::string message = "PRIVMSG " + channel + " :" + get_time_string();
 					socket.send(message);
+				}
+				
+				else if(command == "words")
+				{
+					std::string message = "PRIVMSG " + channel + " :" + get_user(input) + " has written " + boost::lexical_cast<std::string>(get_user_word_count(input)) + " words.";
+					socket.send(message);		
 				}
 			}
 		}

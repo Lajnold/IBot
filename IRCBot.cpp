@@ -75,6 +75,43 @@ public:
 			
 		return message;
 	}
+	
+	bool is_ping(const message_list_type &input)
+	{
+		return input.size() >= 1 && input[0] == "PING";
+	}
+	
+	void handle_ping(const message_list_type &input)
+	{
+		std::string data = "PONG ";
+		
+		if(input.size() >= 5)
+			data += input[1].substr(1);
+		else
+			data += "dummy.server";
+		
+		socket.send(data);
+	}
+	
+	void handle_privmsg(const message_list_type &input)
+	{
+		if(is_command(input))
+		{
+			std::string command = get_command(input);
+			
+			if(command == "yell")
+			{			
+				std::string action = make_action("yells", input);
+				socket.send(action);
+			}
+			
+			else if(command == "whisper")
+			{
+				std::string action = make_action("whispers", input);
+				socket.send(action);
+			}
+		}
+	}
 
 	void parse_irc_message(const std::string &input)
 	{
@@ -83,27 +120,12 @@ public:
 		
 		if(is_privmsg_in_channel(parameters))
 		{
-			if(is_command(parameters))
-			{
-				std::string command = get_command(parameters);
-				
-				if(command == "yell")
-				{			
-					std::string action = make_action("yells", parameters);
-					socket.send(action);
-				}
-				
-				else if(command == "whisper")
-				{
-					std::string action = make_action("whispers", parameters);
-					socket.send(action);
-				}
-			}
+			handle_privmsg(parameters);
 		}
 		
-		else if(parameters.size() >= 1 && parameters[0] == "PING")
+		else if(is_ping(parameters))
 		{
-			socket.send("PONG irc.dot.net");
+			handle_ping(parameters);
 		}
 	}
 

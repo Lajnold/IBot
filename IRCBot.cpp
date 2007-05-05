@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdexcept>
 
 class IRCBot
 {
@@ -41,19 +42,27 @@ public:
 		split_string(out, input, "\r\n");
 	}
 	
+	bool is_privmsg(const message_list_type &input)
+	{
+		return input.size() >= 4 && input[1] == "PRIVMSG";
+	}
+	
 	bool is_privmsg_in_channel(const message_list_type &input)
 	{
-		return input.size() >= 4 && input[1] == "PRIVMSG" && input[2] == channel;
+		return is_privmsg(input) && input[2] == channel;
 	}
 	
 	bool is_command(const message_list_type &input)
 	{
-		return input.size() >= 4 && input[3][1] == '!';
+		return is_privmsg(input) && input[3][1] == '!';
 	}
 	
 	std::string get_command(const message_list_type &input)
 	{
-		return input[3].substr(2);
+		if(is_command(input))
+			return input[3].substr(2);
+		else
+			throw std::runtime_error("IRCBot::get_command(): Tried to extract command from non-command message");
 	}
 	
 	std::string make_action(std::string action, const message_list_type &input)

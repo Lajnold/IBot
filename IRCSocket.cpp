@@ -13,7 +13,7 @@ IRCSocket::IRCSocket()
 	if(m_socket == -1)
 	{
 		int err = errno;
-		throw std::runtime_error(strerror(err));
+		throw std::runtime_error(std::strerror(err));
 	}
 }
 
@@ -39,7 +39,7 @@ void IRCSocket::connect(const std::string &address, const unsigned int port)
 	if(::connect(m_socket, (sockaddr *)&addr, sizeof(sockaddr)) == -1)
 	{
 		int err = errno;
-		throw std::runtime_error(strerror(err));
+		throw std::runtime_error(std::strerror(err));
 	}
 }
 

@@ -104,9 +104,11 @@ public:
 	
 	std::string get_time_string()
 	{
-		std::time_t t = std::time(NULL);
-		char *str = std::ctime(&t);
-		return std::string(str, str + std::strlen(str) - 1);
+		char str[256];
+		std::time_t t = std::time(NULL);		
+		std::tm *tm = std::localtime(&t);
+		std::strftime(str, sizeof(str), "Wohoo! It's %A today! %B %d, in the year of %Y, actually. And the time is %H:%M:%S. But seriously, why don't you just look at the computer clock?", tm);
+		return std::string(str, str + strlen(str));
 	}
 	
 	void handle_privmsg(const message_list_type &input)

@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1178208253 source:/home/lajnold/programming/IRCBot/main.cpp
+	<iostream>
+	<string>
+	<cstring>
+	<vector>
+	<sys/socket.h>
+	<netdb.h>
+
+1178230447 source:/home/lajnold/programming/IRCBot/IRCBot.cpp
+	"IRCSocket.h"
+	<iostream>
+	<vector>
+	<string>
+
+1178210793 /home/lajnold/programming/IRCBot/IRCSocket.h
+	<string>
+	<sys/socket.h>
+
+1178211240 source:/home/lajnold/programming/IRCBot/IRCSocket.cpp
+	<stdexcept>
+	<cerrno>
+	<string>
+	<sys/socket.h>
+	<netdb.h>
+	"IRCSocket.h"
+

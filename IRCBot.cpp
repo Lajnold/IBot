@@ -129,7 +129,15 @@ namespace IRC
 		{
 			assert(is_privmsg(input));
 			
-			return input.size() - 3;
+			unsigned int count = 0;
+			
+			for(message_list_type::const_iterator iter = input.begin() + 3; iter != input.end(); iter++)
+			{
+				if((*iter).find_first_not_of(" \t") != std::string::npos)
+					count++;
+			}
+			
+			return count;
 		}
 		
 		void update_user_word_count(const message_list_type &input)

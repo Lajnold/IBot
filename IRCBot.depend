@@ -7,7 +7,7 @@
 	<sys/socket.h>
 	<netdb.h>
 
-1178397089 source:/home/lajnold/programming/IRCBot/IRCBot.cpp
+1178397753 source:/home/lajnold/programming/IRCBot/IRCBot.cpp
 	<iostream>
 	<vector>
 	<string>
@@ -30,10 +30,12 @@
 	<netdb.h>
 	"IRCSocket.h"
 
-1178396649 source:/home/lajnold/programming/IRCBot/UserStats.cpp
+1178398543 source:/home/lajnold/programming/IRCBot/UserStats.cpp
 	"UserStats.h"
+	<fstream>
+	<string>
 
-1178396632 /home/lajnold/programming/IRCBot/UserStats.h
+1178397882 /home/lajnold/programming/IRCBot/UserStats.h
 	<map>
 	<string>
 

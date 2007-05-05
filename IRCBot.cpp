@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <stdexcept>
+#include <cassert>
 
 class IRCBot
 {
@@ -61,13 +61,12 @@ public:
 	
 	std::string get_command(const message_list_type &input)
 	{
-		if(is_command(input))
-			return input[3].substr(2);
-		else
-			throw std::runtime_error("IRCBot::get_command(): Tried to extract command from non-command message");
+		assert(is_command(input));
+		
+		return input[3].substr(2);
 	}
 	
-	std::string make_action(std::string action, const message_list_type &input)
+	std::string make_action(const std::string &action, const message_list_type &input)
 	{
 		std::string message = "PRIVMSG " + channel + " :\1ACTION " + action;
 		

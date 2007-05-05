@@ -7,24 +7,32 @@
 	<sys/socket.h>
 	<netdb.h>
 
-1178389427 source:/home/lajnold/programming/IRCBot/IRCBot.cpp
-	"IRCSocket.h"
+1178395188 source:/home/lajnold/programming/IRCBot/IRCBot.cpp
 	<iostream>
 	<vector>
 	<string>
 	<cassert>
 	<ctime>
 	<cstring>
+	"IRCSocket.h"
+	"UserStats.h"
 
-1178210793 /home/lajnold/programming/IRCBot/IRCSocket.h
+1178393830 /home/lajnold/programming/IRCBot/IRCSocket.h
 	<string>
 	<sys/socket.h>
 
-1178211240 source:/home/lajnold/programming/IRCBot/IRCSocket.cpp
+1178393710 source:/home/lajnold/programming/IRCBot/IRCSocket.cpp
 	<stdexcept>
 	<cerrno>
 	<string>
 	<sys/socket.h>
 	<netdb.h>
 	"IRCSocket.h"
+
+1178395754 source:/home/lajnold/programming/IRCBot/UserStats.cpp
+	"UserStats.h"
+
+1178395742 /home/lajnold/programming/IRCBot/UserStats.h
+	<map>
+	<string>
 

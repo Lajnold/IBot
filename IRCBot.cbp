@@ -35,6 +35,8 @@
 		<Unit filename="IRCBot.cpp" />
 		<Unit filename="IRCSocket.cpp" />
 		<Unit filename="IRCSocket.h" />
+		<Unit filename="UserStats.cpp" />
+		<Unit filename="UserStats.h" />
 		<Extensions>
 			<code_completion />
 		</Extensions>

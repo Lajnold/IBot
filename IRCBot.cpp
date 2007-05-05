@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include <cassert>
+#include <ctime>
+#include <cstring>
 
 class IRCBot
 {
@@ -66,12 +68,19 @@ public:
 		return input[3].substr(2);
 	}
 	
-	std::string make_action(const std::string &action, const message_list_type &input)
+	std::string make_voice_action(const std::string &action, const message_list_type &input)
 	{
 		std::string message = "PRIVMSG " + channel + " :\1ACTION " + action;
 		
-		for(message_list_type::const_iterator iter = input.begin() + 4; iter != input.end(); iter++)
-			message += " " + *iter;
+		if(input.size() >= 5)
+		{
+			message += " '" + input[4];
+			
+			for(message_list_type::const_iterator iter = input.begin() + 5; iter != input.end(); iter++)
+				message += " " + *iter;
+				
+			message += "'";
+		}
 			
 		return message;
 	}
@@ -85,12 +94,19 @@ public:
 	{
 		std::string data = "PONG ";
 		
-		if(input.size() >= 5)
+		if(input.size() >= 2)
 			data += input[1].substr(1);
 		else
 			data += "dummy.server";
 		
 		socket.send(data);
+	}
+	
+	std::string get_time_string()
+	{
+		std::time_t t = std::time(NULL);
+		char *str = std::ctime(&t);
+		return std::string(str, str + std::strlen(str) - 1);
 	}
 	
 	void handle_privmsg(const message_list_type &input)
@@ -101,14 +117,20 @@ public:
 			
 			if(command == "yell")
 			{			
-				std::string action = make_action("yells", input);
+				std::string action = make_voice_action("yells", input);
 				socket.send(action);
 			}
 			
 			else if(command == "whisper")
 			{
-				std::string action = make_action("whispers", input);
+				std::string action = make_voice_action("whispers", input);
 				socket.send(action);
+			}
+			
+			else if(command == "time")
+			{
+				std::string message = "PRIVMSG " + channel + " :" + get_time_string();
+				socket.send(message);
 			}
 		}
 	}
@@ -118,7 +140,7 @@ public:
 		message_list_type parameters;
 		split_string(parameters, input, " ");
 		
-		if(is_privmsg_in_channel(parameters))
+		if(is_privmsg(parameters))
 		{
 			handle_privmsg(parameters);
 		}

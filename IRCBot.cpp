@@ -10,12 +10,14 @@ class IRCBot
 	IRCSocket socket;
 	const std::string nickname;
 	const std::string channel;
+	const char command_char;
 	
 	typedef std::vector<std::string> message_list_type;
 	
 public:
 
-	IRCBot(const std::string &address, const unsigned int port, const std::string &channel) : nickname("Amon"), channel(channel)
+	IRCBot(const std::string &address, const unsigned int port, const std::string &channel, const char command_char)
+	: nickname("Amon"), channel(channel), command_char(command_char)
 	{
 		socket.connect(address.c_str(), port);
 		socket.send("NICK " + nickname);
@@ -54,7 +56,7 @@ public:
 	
 	bool is_command(const message_list_type &input)
 	{
-		return is_privmsg(input) && input[3][1] == '!';
+		return is_privmsg(input) && input[3][1] == command_char;
 	}
 	
 	std::string get_command(const message_list_type &input)
@@ -130,6 +132,6 @@ public:
 
 int main()
 {
-	IRCBot bot("127.0.0.1", 9997, "#qwer");
+	IRCBot bot("127.0.0.1", 9997, "#qwer", '!');
 	bot.run();
 }

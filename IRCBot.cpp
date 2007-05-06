@@ -205,7 +205,7 @@ namespace IRC
 			}
 		}
 
-		void parse_irc_data(const std::string &input)
+		void parse_data(const std::string &input)
 		{
 			message_list_type splitted_messages;
 			split_irc_messages(splitted_messages, input);
@@ -221,7 +221,7 @@ namespace IRC
 		{		
 			while(true)
 			{
-				parse_irc_data(socket.receive());
+				parse_data(socket.receive());
 			}
 		}
 	};

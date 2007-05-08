@@ -1,13 +1,8 @@
 # depslib dependency file v1.0
-1178208253 source:/home/lajnold/programming/IRCBot/main.cpp
-	<iostream>
-	<string>
-	<cstring>
-	<vector>
-	<sys/socket.h>
-	<netdb.h>
+1178665555 source:/home/lajnold/programming/IRCBot/main.cpp
+	"IRCBot.h"
 
-1178397753 source:/home/lajnold/programming/IRCBot/IRCBot.cpp
+1178665783 source:/home/lajnold/programming/IRCBot/IRCBot.cpp
 	<iostream>
 	<vector>
 	<string>
@@ -15,8 +10,7 @@
 	<ctime>
 	<cstring>
 	<boost/lexical_cast.hpp>
-	"IRCSocket.h"
-	"UserStats.h"
+	"IRCBot.h"
 
 1178393830 /home/lajnold/programming/IRCBot/IRCSocket.h
 	<string>
@@ -38,4 +32,10 @@
 1178397882 /home/lajnold/programming/IRCBot/UserStats.h
 	<map>
 	<string>
+
+1178665993 /home/lajnold/programming/IRCBot/IRCBot.h
+	<vector>
+	<string>
+	"IRCSocket.h"
+	"UserStats.h"
 

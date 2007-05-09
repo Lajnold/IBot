@@ -1,3 +1,6 @@
+#ifndef IRCSOCKET_H
+#define IRCSOCKET_H
+
 #include <string>
 
 #include <sys/socket.h>
@@ -17,3 +20,5 @@ namespace IRC
 		std::string receive();
 	};
 }
+
+#endif

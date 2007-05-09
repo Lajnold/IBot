@@ -1,3 +1,6 @@
+#ifndef IRCBOT_H
+#define IRCBOT_H
+
 #include <vector>
 #include <string>
 
@@ -44,3 +47,5 @@ namespace IRC
 		void run();
 	};
 }
+
+#endif

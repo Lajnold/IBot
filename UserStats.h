@@ -1,3 +1,6 @@
+#ifndef USERSTATS_H
+#define USERSTATS_H
+
 #include <map>
 #include <string>
 
@@ -25,3 +28,5 @@ namespace IRC
 		unsigned int get_word_count(std::string user);
 	};
 }
+
+#endif

@@ -11,7 +11,7 @@
 	<boost/lexical_cast.hpp>
 	"IRCBot.h"
 
-1178736063 /home/lajnold/programming/IRCBot/IRCSocket.h
+1178742788 /home/lajnold/programming/IRCBot/IRCSocket.h
 	<string>
 	<sys/socket.h>
 
@@ -32,7 +32,7 @@
 	<map>
 	<string>
 
-1178742699 /home/lajnold/programming/IRCBot/IRCBot.h
+1178743059 /home/lajnold/programming/IRCBot/IRCBot.h
 	<vector>
 	<string>
 	"IRCSocket.h"

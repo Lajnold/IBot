@@ -36,9 +36,6 @@ namespace IRC
 	
 	unsigned int UserStats::get_word_count(std::string user)
 	{
-		if(users.find(user) == users.end())
-			return 0;
-		else
-			return users[user].word_count;
+		return users[user].word_count;
 	}
 }

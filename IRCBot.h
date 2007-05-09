@@ -23,8 +23,12 @@ namespace IRC
 
 		IRCBot(const std::string &address, const unsigned int port, const std::string &channel, const char command_char);
 		
+		void send(std::string message);
+		
 		void split_string(message_list_type &out, const std::string &input, const std::string &delimiter);
 		void split_irc_messages(message_list_type &out, const std::string &input);
+		
+		std::string get_channel(const message_list_type &input);
 		std::string get_command(const message_list_type &input);
 		std::string get_user(const message_list_type &input);
 		std::string get_time_string();
@@ -35,8 +39,12 @@ namespace IRC
 		bool is_command(const message_list_type &input);
 		bool is_ping(const message_list_type &input);
 		
-		void handle_ping(const message_list_type &input);
-		void handle_privmsg(const message_list_type &input);
+		bool handle_ping(const message_list_type &input);
+		bool handle_yell(const message_list_type &input);
+		bool handle_whisper(const message_list_type &input);
+		bool handle_privmsg(const message_list_type &input);
+		bool handle_time(const message_list_type &input);
+		bool handle_words(const message_list_type &input);
 		
 		unsigned int get_word_count_in_privmsg(const message_list_type &input);
 		void update_user_word_count(const message_list_type &input);

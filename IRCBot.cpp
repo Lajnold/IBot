@@ -18,6 +18,11 @@ namespace IRC
 		socket.send("USER Amon 0 * :Amon");
 		socket.send("JOIN " + channel);
 	}
+	
+	void IRCBot::send(std::string message)
+	{
+		socket.send(message);
+	}
 
 	void IRCBot::split_string(message_list_type &out, const std::string &input, const std::string &delimiter)
 	{
@@ -45,12 +50,19 @@ namespace IRC
 
 	bool IRCBot::is_privmsg_in_channel(const message_list_type &input)
 	{
-		return is_privmsg(input) && input[2] == channel;
+		return is_privmsg(input) && get_channel(input) == channel;
 	}
 
 	bool IRCBot::is_command(const message_list_type &input)
 	{
 		return is_privmsg(input) && input[3][1] == command_char;
+	}
+	
+	std::string IRCBot::get_channel(const message_list_type &input)
+	{
+		assert(is_privmsg(input));
+		
+		return input[2];
 	}
 
 	std::string IRCBot::get_command(const message_list_type &input)
@@ -80,18 +92,6 @@ namespace IRC
 	bool IRCBot::is_ping(const message_list_type &input)
 	{
 		return input.size() >= 1 && input[0] == "PING";
-	}
-
-	void IRCBot::handle_ping(const message_list_type &input)
-	{
-		std::string data = "PONG ";
-		
-		if(input.size() >= 2)
-			data += input[1].substr(1);
-		else
-			data += "dummy.server";
-		
-		socket.send(data);
 	}
 
 	std::string IRCBot::get_time_string()
@@ -140,39 +140,81 @@ namespace IRC
 		std::string user = get_user(input);
 		return stats.get_word_count(user);
 	}
-
-	void IRCBot::handle_privmsg(const message_list_type &input)
+	
+	bool IRCBot::handle_ping(const message_list_type &input)
 	{
+		if(!is_ping(input))
+			return false;
+			
+		std::string data = "PONG ";
+		
+		if(input.size() >= 2)
+			data += input[1].substr(1);
+		else
+			data += "dummy.server";
+		
+		send(data);
+		
+		return true;
+	}
+	
+	bool IRCBot::handle_yell(const message_list_type &input)
+	{
+		if(!is_command(input) || get_command(input) != "yell")
+			return false;
+			
+		std::string message = make_voice_action("yells", input);
+		send(message);
+		
+		return true;
+	}
+	
+	bool IRCBot::handle_whisper(const message_list_type &input)
+	{
+		if(!is_command(input) || get_command(input) != "whisper")
+			return false;
+			
+		std::string message = make_voice_action("whispers", input);
+		send(message);
+		
+		return true;
+	}
+	
+	bool IRCBot::handle_time(const message_list_type &input)
+	{
+		if(!is_command(input) || get_command(input) != "time")
+			return false;
+			
+		std::string message = "PRIVMSG " + channel + " :" + get_time_string();
+		send(message);
+		
+		return true;
+	}
+	
+	bool IRCBot::handle_words(const message_list_type &input)
+	{
+		if(!is_command(input) || get_command(input) != "words")
+			return false;
+			
+		std::string message = "PRIVMSG " + channel + " :" + get_user(input) + " has written " + boost::lexical_cast<std::string>(get_user_word_count(input)) + " words.";
+		send(message);
+		
+		return true;
+	}
+
+	bool IRCBot::handle_privmsg(const message_list_type &input)
+	{
+		if(!is_privmsg(input))
+			return false;
+		
 		update_user_word_count(input);
 		
-		if(is_command(input))
-		{
-			std::string command = get_command(input);
-			
-			if(command == "yell")
-			{			
-				std::string action = make_voice_action("yells", input);
-				socket.send(action);
-			}
-			
-			else if(command == "whisper")
-			{
-				std::string action = make_voice_action("whispers", input);
-				socket.send(action);
-			}
-			
-			else if(command == "time")
-			{
-				std::string message = "PRIVMSG " + channel + " :" + get_time_string();
-				socket.send(message);
-			}
-			
-			else if(command == "words")
-			{
-				std::string message = "PRIVMSG " + channel + " :" + get_user(input) + " has written " + boost::lexical_cast<std::string>(get_user_word_count(input)) + " words.";
-				socket.send(message);		
-			}
-		}
+		if(handle_yell(input)) { }
+		else if(handle_whisper(input)) { }
+		else if(handle_time(input)) { }
+		else if(handle_words(input)) { }
+		
+		return true;
 	}
 
 	void IRCBot::parse_irc_message(const std::string &input)
@@ -180,15 +222,8 @@ namespace IRC
 		message_list_type parameters;
 		split_string(parameters, input, " ");
 		
-		if(is_privmsg(parameters))
-		{
-			handle_privmsg(parameters);
-		}
-		
-		else if(is_ping(parameters))
-		{
-			handle_ping(parameters);
-		}
+		if(handle_privmsg(parameters)) { }
+		else if(handle_ping(parameters)) { }
 	}
 
 	void IRCBot::parse_data(const std::string &input)

@@ -11,13 +11,13 @@ namespace IRC
 {
 	class IRCBot
 	{
+		typedef std::vector<std::string> message_list_type;
+		
 		IRC::IRCSocket socket;
 		const std::string nickname;
 		const std::string channel;
 		const char command_char;
 		IRC::UserStats stats;
-		
-		typedef std::vector<std::string> message_list_type;
 		
 		void send(std::string message);
 		

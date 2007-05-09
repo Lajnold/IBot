@@ -39,9 +39,9 @@ namespace IRC
 		bool is_ping(const message_list_type &input);
 		
 		bool handle_ping(const message_list_type &input);
+		bool handle_privmsg(const message_list_type &input);
 		bool handle_yell(const message_list_type &input);
 		bool handle_whisper(const message_list_type &input);
-		bool handle_privmsg(const message_list_type &input);
 		bool handle_time(const message_list_type &input);
 		bool handle_words(const message_list_type &input);
 		

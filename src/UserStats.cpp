@@ -34,7 +34,7 @@ namespace IRC
 			std::string message = get_user(input) + " has written " + boost::lexical_cast<std::string>(get_user_word_count(input)) + " words.";
 			bot->say(message);
 		}
-		else if(is_msg(input))
+		else if(is_channel_msg(input))
 			update_user_word_count(input);
 	}
 	

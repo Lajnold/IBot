@@ -33,6 +33,9 @@ namespace IRC
 
 		IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const char command_char);
 		
+		const std::string &get_nickname();
+		const std::string &get_channel();
+		
 		void say(const std::string &input);
 		
 		void run();

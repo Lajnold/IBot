@@ -3,6 +3,7 @@
 
 #include "IRCCommandHandler.h"
 #include "IRC_types.h"
+#include "IRCBot.h"
 
 namespace IRC
 {
@@ -11,6 +12,11 @@ namespace IRC
 	bool IRCCommandHandler::is_msg(const message_list_type &input)
 	{
 		return input.size() >= 4 && input[1] == "PRIVMSG";
+	}
+	
+	bool IRCCommandHandler::is_channel_msg(const message_list_type &input)
+	{
+		return is_msg(input) && get_channel(input) == bot->get_channel();
 	}
 
 	bool IRCCommandHandler::is_command(const message_list_type &input)

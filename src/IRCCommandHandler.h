@@ -18,6 +18,7 @@ namespace IRC
 		IRCBot *bot;
 		
 		bool is_msg(const message_list_type &input);
+		bool is_channel_msg(const message_list_type &input);
 		bool is_command(const message_list_type &input);
 		bool is_command(const message_list_type &input, const std::string &command);
 		

@@ -27,6 +27,16 @@ namespace IRC
 		send("JOIN " + channel);
 	}
 	
+	const std::string &IRCBot::get_channel()
+	{
+		return channel;
+	}
+	
+	const std::string &IRCBot::get_nickname()
+	{
+		return nickname;
+	}
+	
 	void IRCBot::send(std::string message)
 	{
 		socket.send(message);

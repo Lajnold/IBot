@@ -32,13 +32,21 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="IRCBot.cpp" />
-		<Unit filename="IRCBot.h" />
-		<Unit filename="IRCSocket.cpp" />
-		<Unit filename="IRCSocket.h" />
-		<Unit filename="UserStats.cpp" />
-		<Unit filename="UserStats.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="src/ConnectionError.h" />
+		<Unit filename="src/IRCBot.cpp" />
+		<Unit filename="src/IRCBot.h" />
+		<Unit filename="src/IRCCommandHandler.cpp" />
+		<Unit filename="src/IRCCommandHandler.h" />
+		<Unit filename="src/IRCSocket.cpp" />
+		<Unit filename="src/IRCSocket.h" />
+		<Unit filename="src/IRC_types.h" />
+		<Unit filename="src/Time.cpp" />
+		<Unit filename="src/Time.h" />
+		<Unit filename="src/UserStats.cpp" />
+		<Unit filename="src/UserStats.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/utils.cpp" />
+		<Unit filename="src/utils.h" />
 		<Extensions>
 			<code_completion />
 		</Extensions>

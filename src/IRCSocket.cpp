@@ -1,11 +1,15 @@
 #include <stdexcept>
 #include <cerrno>
 #include <string>
+#include <cassert>
 
 #include <sys/socket.h>
 #include <netdb.h>
+#include <netinet/in.h>
 
 #include "IRCSocket.h"
+#include "IRC_types.h"
+#include "ConnectionError.h"
 
 namespace IRC
 {
@@ -29,7 +33,7 @@ namespace IRC
 		hostent *he = gethostbyname(address.c_str());
 		if(he == NULL)
 		{
-			throw std::runtime_error("Could not find host");
+			throw ConnectionError("Could not find host");
 		}
 		
 		sockaddr_in addr;
@@ -41,23 +45,56 @@ namespace IRC
 		if(::connect(m_socket, (sockaddr *)&addr, sizeof(sockaddr)) == -1)
 		{
 			int err = errno;
-			throw std::runtime_error(std::strerror(err));
+			throw ConnectionError(std::strerror(err));
 		}
 	}
 
 	void IRCSocket::send(const std::string &data)
 	{
 		std::string to_send(data);
+		
 		if(to_send.find("\r\n") == std::string::npos)
 			to_send.append("\r\n");
 			
 		::send(m_socket, to_send.c_str(), to_send.size(), 0);
 	}
 
-	std::string IRCSocket::receive()
+	void IRCSocket::receive(message_list_type &out)
 	{
 		char buf[1024];
-		int len = recv(m_socket, buf, sizeof(buf) - 1, 0);
-		return std::string(buf, buf + len);
+		int len = recv(m_socket, buf, sizeof(buf), 0);
+		
+		if(len == 0)
+			throw ConnectionError();
+		
+		append_buffer(buf, len);
+		
+		while(has_finished_packet())
+			out.push_back(get_finished_packet());
+	}
+	
+	void IRCSocket::append_buffer(const char *data, const unsigned short len)
+	{
+		buffer += std::string(data, data + len);
+	}
+	
+	bool IRCSocket::has_finished_packet()
+	{
+		return buffer.find("\r\n") != std::string::npos;
+	}
+	
+	std::string IRCSocket::get_finished_packet()
+	{
+		assert(has_finished_packet());
+		
+		std::string packet = buffer.substr(0, buffer.find("\r\n"));
+		clear_finished_packet();
+		
+		return packet;
+	}
+	
+	void IRCSocket::clear_finished_packet()
+	{
+		buffer = buffer.substr(buffer.find("\r\n") + 1);
 	}
 }

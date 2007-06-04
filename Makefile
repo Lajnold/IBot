@@ -1,3 +1,10 @@
+CC=g++
+CFLAGS=-Wall
+LOADLIBES=-lboost_program_options-gcc
 
-all: src/main.cpp src/IRCBot.h src/IRCBot.cpp src/IRCSocket.h src/IRCSocket.cpp src/ConnectionError.h src/UserStats.h src/UserStats.cpp src/IRCCommandHandler.h src/IRCCommandHandler.cpp src/Time.h src/Time.cpp src/utils.h src/utils.cpp
-	g++ src/main.cpp src/IRCBot.cpp src/IRCSocket.cpp src/IRCCommandHandler.cpp src/UserStats.cpp src/Time.cpp src/utils.cpp -o IRCBot
+SRCS=main.cpp IRCBot.cpp IRCSocket.cpp UserStats.cpp IRCCommandHandler.cpp Time.cpp utils.cpp
+OBJS=main.o IRCBot.o IRCSocket.o UserStats.o IRCCommandHandler.o Time.o utils.o
+HEADERS=IRCBot.h IRCSocket.h ConnectionError.h IRCCommandHandler.h utils.h UserStats.h Time.h
+
+bot: $(OBJS)
+	$(CC) $(SRCS) $(LOADLIBES) -o ../Amon

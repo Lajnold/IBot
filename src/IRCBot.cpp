@@ -9,18 +9,14 @@
 namespace IRC
 {
 	IRCBot::IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const char command_char)
-	: running(true), message_delimiter(" "), nickname(nickname), channel(channel), stats(this, command_char), time(this, command_char)
+	: running(true), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel), stats(this, command_char), time(this, command_char) 
 	{
-		try
-		{
-			socket.connect(address.c_str(), port);
-		}
-		catch(const ConnectionError &e)
-		{
-			std::cout << "Connection failed: " << e.what() << std::endl;
-			running = false;
-			return;
-		}
+		
+	}
+	
+	void IRCBot::connect()
+	{
+		socket.connect(address.c_str(), port);
 		
 		send("NICK " + nickname);
 		send("USER " + nickname + " 0 * :" + nickname);
@@ -75,6 +71,16 @@ namespace IRC
 
 	void IRCBot::run()
 	{	
+		try
+		{
+			connect();
+		}
+		catch(const ConnectionError &e)
+		{
+			std::cout << "Connection failed: " << e.what() << std::endl;
+			running = false;
+		}
+		
 		message_list_type messages;	
 		
 		while(running)

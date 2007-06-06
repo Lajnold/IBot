@@ -16,12 +16,17 @@ namespace IRC
 		
 		IRCSocket socket;
 		const std::string message_delimiter;
+		
+		const std::string address;
+		const unsigned short port;
+		
 		const std::string nickname;
 		const std::string channel;
 		
 		UserStats stats;
 		Time time;
 		
+		void connect();
 		void send(std::string message);
 		
 		void parse_IRC_message(const std::string &input);

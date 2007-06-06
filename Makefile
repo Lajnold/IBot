@@ -7,5 +7,5 @@ OBJS=src/main.o src/IRCBot.o src/IRCSocket.o src/UserStats.o src/IRCCommandHandl
 HEADERS=src/IRCBot.h src/IRCSocket.h src/ConnectionError.h src/IRCCommandHandler.h src/utils.h src/UserStats.h src/Time.h
 
 Bot: $(OBJS)
-	$(CC) $(CFLAGS) -o $< $(LOADLIBES) $(SRCS)
+	$(CC) $(CFLAGS) -o $@ $(LOADLIBES) $(SRCS)
 

@@ -36,7 +36,7 @@ bool parse_commandline(int argc, char *argv[], BotOptions &options)
 		po::store(po::parse_command_line(argc, argv, desc), vm);
 		po::notify(vm);
 	}
-	catch(const po::invalid_command_line_syntax &e)
+	catch(const po::error &e)
 	{
 		std::cout << e.what() << std::endl << std::endl;
 		std::cout << desc << std::endl;

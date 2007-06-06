@@ -6,5 +6,6 @@ SRCS=src/main.cpp src/IRCBot.cpp src/IRCSocket.cpp src/UserStats.cpp src/IRCComm
 OBJS=src/main.o src/IRCBot.o src/IRCSocket.o src/UserStats.o src/IRCCommandHandler.o src/Time.o src/utils.o
 HEADERS=src/IRCBot.h src/IRCSocket.h src/ConnectionError.h src/IRCCommandHandler.h src/utils.h src/UserStats.h src/Time.h
 
-bot: $(OBJS)
-	$(CC) $(CFLAGS) $(SRCS) $(LOADLIBES) -o Bot
+Bot: $(OBJS)
+	$(CC) $(CFLAGS) -o $< $(LOADLIBES) $(SRCS)
+

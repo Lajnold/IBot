@@ -32,6 +32,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add library="libboost_program_options" />
+		</Linker>
 		<Unit filename="src/ConnectionError.h" />
 		<Unit filename="src/IRCBot.cpp" />
 		<Unit filename="src/IRCBot.h" />

@@ -32,6 +32,7 @@ namespace IRC
 		void parse_IRC_message(const std::string &input);
 		void parse_data(const message_list_type &input);
 		
+		bool handle_ping(const message_list_type &input);
 		bool handle_msg(const message_list_type &input);
 		
 	public:

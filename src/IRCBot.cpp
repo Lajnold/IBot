@@ -43,6 +43,22 @@ namespace IRC
 		std::string channel_message = "PRIVMSG " + channel + " :" + message;
 		send(channel_message);
 	}
+	
+	bool IRCBot::handle_ping(const message_list_type &input)
+	{
+		if(input.size() >= 1 && input[0] != "\nPING")
+			return false;
+		
+		std::string message = "PONG ";
+		if(input.size() >= 2)
+			message += input[2].substr(1);
+		else
+			message += "dummy.server";
+		
+		send(message);
+		
+		return true;
+	}
 
 	bool IRCBot::handle_msg(const message_list_type &input)
 	{
@@ -57,7 +73,8 @@ namespace IRC
 		message_list_type parameters;
 		split_string(parameters, input, message_delimiter);
 		
-		if(handle_msg(parameters)) { }
+		if(handle_ping(parameters)) { }
+		else if(handle_msg(parameters)) { }
 	}
 
 	void IRCBot::parse_data(const message_list_type &input)

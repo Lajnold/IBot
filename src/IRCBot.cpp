@@ -46,12 +46,12 @@ namespace IRC
 	
 	bool IRCBot::handle_ping(const message_list_type &input)
 	{
-		if(input.size() >= 1 && input[0] != "\nPING")
+		if(input.size() < 1 || input[0] != "\nPING")
 			return false;
 		
 		std::string message = "PONG ";
 		if(input.size() >= 2)
-			message += input[2].substr(1);
+			message += input[1].substr(1);
 		else
 			message += "dummy.server";
 		

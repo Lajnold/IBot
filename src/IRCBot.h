@@ -5,8 +5,10 @@
 
 #include "IRC_types.h"
 #include "IRCSocket.h"
+
 #include "Time.h"
 #include "UserStats.h"
+#include "DUMIIFinger.h"
 
 namespace IRC
 {
@@ -25,6 +27,7 @@ namespace IRC
 		
 		UserStats stats;
 		Time time;
+		DUMIIFinger finger;
 		
 		void connect();
 		void send(std::string message);

@@ -9,7 +9,8 @@
 namespace IRC
 {
 	IRCBot::IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const char command_char)
-	: running(true), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel), stats(this, command_char), time(this, command_char) 
+	: running(true), socket("\r\n"), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel), stats(this, command_char), 
+		time(this, command_char), finger(this, command_char)
 	{
 		
 	}
@@ -64,6 +65,7 @@ namespace IRC
 	{
 		time.handle(input);
 		stats.handle(input);
+		finger.handle(input);
 		
 		return true;
 	}

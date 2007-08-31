@@ -1,11 +1,10 @@
-#include "UserStats.h"
-
 #include <fstream>
 #include <string>
 #include <cassert>
 
 #include <boost/lexical_cast.hpp>
 
+#include "UserStats.h"
 #include "IRC_types.h"
 #include "utils.h"
 #include "IRCBot.h"

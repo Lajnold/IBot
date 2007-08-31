@@ -11,7 +11,6 @@ namespace IRC
 	
 	class IRCCommandHandler
 	{
-		
 		const char command_char;
 
 	protected:

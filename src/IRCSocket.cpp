@@ -13,7 +13,7 @@
 
 namespace IRC
 {
-	IRCSocket::IRCSocket()
+	IRCSocket::IRCSocket(std::string packet_ending) : packet_ending(packet_ending)
 	{
 		m_socket = socket(PF_INET, SOCK_STREAM, 0);
 		if(m_socket == -1)

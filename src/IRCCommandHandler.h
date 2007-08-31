@@ -9,7 +9,7 @@ namespace IRC
 {
 	class IRCBot;
 	
-	class IRCCommandHandler
+	class CommandHandler
 	{
 		const char command_char;
 
@@ -26,8 +26,8 @@ namespace IRC
 		std::string get_user(const message_list_type &input);
 		
 	public:
-		IRCCommandHandler(IRCBot *bot, const char command_character);
-		virtual ~IRCCommandHandler() { };
+		CommandHandler(IRCBot *bot, const char command_character);
+		virtual ~CommandHandler() { };
 		virtual void handle(const message_list_type &input) = 0;
 	};
 }

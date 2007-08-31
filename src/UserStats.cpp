@@ -11,7 +11,7 @@
 
 namespace IRC
 {
-	UserStats::UserStats(IRCBot *bot, const char command_char) : IRCCommandHandler(bot, command_char), filename("stats.txt")
+	UserStats::UserStats(IRCBot *bot, const char command_char) : CommandHandler(bot, command_char), filename("stats.txt")
 	{
 		std::ifstream file(filename.c_str());
 		if(!file.is_open())

@@ -7,7 +7,7 @@
 
 namespace IRC
 {
-	Time::Time(IRCBot *bot, const char command_char) : IRCCommandHandler(bot, command_char) { }
+	Time::Time(IRCBot *bot, const char command_char) : CommandHandler(bot, command_char) { }
 	
 	void Time::handle(const message_list_type &input)
 	{

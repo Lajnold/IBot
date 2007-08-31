@@ -4,14 +4,14 @@
 #include <map>
 #include <string>
 
-#include "IRCCommandHandler.h"
+#include "CommandHandler.h"
 #include "IRC_types.h"
 
 namespace IRC
 {
 	class IRCBot;
 	
-	class UserStats : public IRCCommandHandler
+	class UserStats : public CommandHandler
 	{
 		struct Stats
 		{

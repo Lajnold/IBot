@@ -1,14 +1,14 @@
 #ifndef IRC_TIME_H
 #define IRC_TIME_H
 
-#include "IRCCommandHandler.h"
+#include "CommandHandler.h"
 #include "IRC_types.h"
 
 namespace IRC
 {
 	class IRCBot;
 	
-	class Time : public IRCCommandHandler
+	class Time : public CommandHandler
 	{
 		
 		std::string get_time_string();

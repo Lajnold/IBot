@@ -61,7 +61,7 @@ namespace IRC
 
 	void IRCSocket::receive(message_list_type &out)
 	{
-		char buf[1024];
+		char buf[2048];
 		int len = recv(m_socket, buf, sizeof(buf), 0);
 		
 		if(len == 0)

@@ -6,6 +6,9 @@
 #include "IRCSocket.h"
 #include "utils.h"
 
+#include <boost/lexical_cast.hpp>
+#include <string>
+
 namespace IRC
 {
 	DUMIIFinger::DUMIIFinger(IRCBot *bot, const char command_char) : CommandHandler(bot, command_char)
@@ -24,10 +27,10 @@ namespace IRC
 			{
 				bot->say("No one visible in DUMII. :(");
 				return;
-			}
 			
 			message_list_type out;
-			split_string(out, list[0], "\n");
+			for(message_list_type::const_iterator iter = list.begin(); iter != list.end(); iter++)
+				split_string(out, *iter, "\n");
 			
 			for(message_list_type::const_iterator iter = out.begin(); iter != out.end(); iter++)
 				if(!(*iter).empty())
@@ -41,7 +44,7 @@ namespace IRC
 		socket.connect("dum.acc.umu.se", 79);
 		
 		socket.send("\r\n");
-		usleep(100000);
+		usleep(200000);
 		socket.receive(list);
 	}
 }

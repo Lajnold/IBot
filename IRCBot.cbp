@@ -35,11 +35,13 @@
 		<Linker>
 			<Add library="libboost_program_options" />
 		</Linker>
+		<Unit filename="src/CommandHandler.cpp" />
+		<Unit filename="src/CommandHandler.h" />
 		<Unit filename="src/ConnectionError.h" />
+		<Unit filename="src/DUMIIFinger.cpp" />
+		<Unit filename="src/DUMIIFinger.h" />
 		<Unit filename="src/IRCBot.cpp" />
 		<Unit filename="src/IRCBot.h" />
-		<Unit filename="src/IRCCommandHandler.cpp" />
-		<Unit filename="src/IRCCommandHandler.h" />
 		<Unit filename="src/IRCSocket.cpp" />
 		<Unit filename="src/IRCSocket.h" />
 		<Unit filename="src/IRC_types.h" />
@@ -52,6 +54,7 @@
 		<Unit filename="src/utils.h" />
 		<Extensions>
 			<code_completion />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

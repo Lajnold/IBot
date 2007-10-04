@@ -9,7 +9,7 @@
 namespace IRC
 {
 	IRCBot::IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const char command_char)
-	: running(true), socket("\r\n"), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel), stats(this, command_char), 
+	: running(true), socket(), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel), stats(this, command_char), 
 		time(this, command_char), finger(this, command_char)
 	{
 		

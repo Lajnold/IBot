@@ -12,7 +12,7 @@ namespace IRC
 	class IRCSocket
 	{
 		int m_socket;
-		std::string buffer, packet_ending;
+		std::string buffer;
 		
 		void append_buffer(const char *data, unsigned short len);
 		bool has_finished_packet();
@@ -20,7 +20,7 @@ namespace IRC
 		void clear_finished_packet();
 		
 	public:
-		IRCSocket(std::string packet_ending);
+		IRCSocket();
 		~IRCSocket();
 		
 		void connect(const std::string & address, const unsigned int port);

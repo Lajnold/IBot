@@ -12,7 +12,8 @@ namespace IRC
 	class CommandHandler
 	{
 		const char command_char;
-
+		
+		
 	protected:
 		IRCBot *bot;
 		

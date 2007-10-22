@@ -30,7 +30,7 @@ namespace IRC
 	{
 		if(is_command(input, "words"))
 		{
-			update_user_word_count(1);
+			//update_user_word_count('1');
 			std::string message = get_user(input) + " has written " + boost::lexical_cast<std::string>(get_user_word_count(input)) + " words.";
 			bot->say(message);
 		}

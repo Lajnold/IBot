@@ -26,9 +26,7 @@ namespace IRC
 	
 	const std::string &IRCBot::get_channel()
 	{
-		std::string s = channel;
-		std::transform(s.begin(), s.end(), s.begin(), tolower);
-		return s;
+		return channel;
 	}
 	
 	const std::string &IRCBot::get_nickname()

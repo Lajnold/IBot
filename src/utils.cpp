@@ -17,4 +17,10 @@ namespace IRC
 			out.push_back(input.substr(first, second - first));
 		}
 	}
+	
+	std::string strtolower(std::string s)
+	{
+		std::transform(s.begin(), s.end(), s.begin(), tolower);
+		return s;
+	}
 }

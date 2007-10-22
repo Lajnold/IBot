@@ -4,6 +4,7 @@
 #include "CommandHandler.h"
 #include "IRC_types.h"
 #include "IRCBot.h"
+#include "utils.h"
 
 namespace IRC
 {
@@ -17,7 +18,7 @@ namespace IRC
 	
 	bool CommandHandler::is_channel_msg(const message_list_type &input)
 	{
-		return is_msg(input) && get_channel(input) == bot->get_channel();
+		return is_msg(input) && strtolower(get_channel(input)) == strtolower(bot->get_channel());
 	}
 
 	bool CommandHandler::is_command(const message_list_type &input)
@@ -33,9 +34,7 @@ namespace IRC
 	std::string CommandHandler::get_channel(const message_list_type &input)
 	{
 		assert(is_msg(input));
-		std::string s = input[2];
-		std::transform(s.begin(),s.end(),s.begin(), tolower);
-		return s;
+		return input[2];
 	}
 
 	std::string CommandHandler::get_command(const message_list_type &input)

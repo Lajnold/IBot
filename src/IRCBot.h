@@ -17,6 +17,7 @@ namespace IRC
 		bool running;
 		
 		IRCSocket socket;
+		
 		const std::string message_delimiter;
 		
 		const std::string address;

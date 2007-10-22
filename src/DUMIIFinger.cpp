@@ -20,7 +20,7 @@ namespace IRC
 			message_list_type list;
 			fill_who_list(list);
 			
-			if(list.size() == 0)
+			if(list.size() < 3)
 			{
 				bot->say("No one visible in DUMII. :(");
 				return;
@@ -38,7 +38,7 @@ namespace IRC
 	
 	void DUMIIFinger::fill_who_list(message_list_type &list)
 	{
-		IRCSocket socket;
+		IRCSocket socket("\n");
 		socket.connect("dum.acc.umu.se", 79);
 		
 		socket.send("\r\n");

@@ -32,8 +32,9 @@ namespace IRC
 	std::string CommandHandler::get_channel(const message_list_type &input)
 	{
 		assert(is_msg(input));
-		
-		return input[2];
+		string s = input[2];
+		std::transform(s.begin(),s.end(),s.begin(), tolower);
+		return s;
 	}
 
 	std::string CommandHandler::get_command(const message_list_type &input)

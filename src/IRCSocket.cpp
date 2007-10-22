@@ -13,7 +13,7 @@
 
 namespace IRC
 {
-	IRCSocket::IRCSocket()
+	IRCSocket::IRCSocket(const std::string &line_ending) : line_ending(line_ending)
 	{
 		m_socket = socket(PF_INET, SOCK_STREAM, 0);
 		if(m_socket == -1)
@@ -80,14 +80,14 @@ namespace IRC
 	
 	bool IRCSocket::has_finished_packet()
 	{
-		return buffer.find("\r\n") != std::string::npos;
+		return buffer.find(line_ending) != std::string::npos;
 	}
 	
 	std::string IRCSocket::get_finished_packet()
 	{
 		assert(has_finished_packet());
 		
-		std::string packet = buffer.substr(0, buffer.find("\r\n"));
+		std::string packet = buffer.substr(0, buffer.find(line_ending));
 		clear_finished_packet();
 		
 		return packet;
@@ -95,6 +95,6 @@ namespace IRC
 	
 	void IRCSocket::clear_finished_packet()
 	{
-		buffer = buffer.substr(buffer.find("\r\n") + 1);
+		buffer = buffer.substr(buffer.find(line_ending) + 1);
 	}
 }

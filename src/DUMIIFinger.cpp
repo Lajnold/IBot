@@ -43,6 +43,11 @@ namespace IRC
 		
 		socket.send("\r\n");
 		usleep(200000);
-		socket.receive(list);
+		try
+		{
+			socket.receive(list);
+		}
+		catch (std::string e)
+		{}
 	}
 }

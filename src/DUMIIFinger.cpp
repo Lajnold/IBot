@@ -51,7 +51,7 @@ namespace IRC
 			while(list.empty() && std::time(NULL) < max_time)
 			{
 				socket.receive(list);
-				usleep(40000);
+				usleep(60000);
 			}
 		}
 		catch(const ConnectionError &e)

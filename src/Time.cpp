@@ -1,5 +1,6 @@
 #include <string>
 #include <ctime>
+#include <cstring>
 
 #include "Time.h"
 #include "IRC_types.h"

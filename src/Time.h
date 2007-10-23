@@ -1,6 +1,8 @@
 #ifndef IRC_TIME_H
 #define IRC_TIME_H
 
+#include <string>
+
 #include "CommandHandler.h"
 #include "IRC_types.h"
 

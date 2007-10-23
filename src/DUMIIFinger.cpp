@@ -44,19 +44,13 @@ namespace IRC
 		IRCSocket socket("\n");
 		socket.connect("dum.acc.umu.se", 79);
 		
-		try
-		{
-			std::time_t max_time = std::time(NULL) + 1;
+		usleep(250000);
+		socket.receive(list);
 
-			while(list.empty() && std::time(NULL) < max_time)
-			{
-				socket.receive(list);
-				usleep(60000);
-			}
-		}
-		catch(const ConnectionError &e)
+		if(list.size() < 3)
 		{
-		    
+		    usleep(100000);
+		    socket.receive(list);
 		}
 	}
 }

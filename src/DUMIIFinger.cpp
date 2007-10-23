@@ -1,5 +1,7 @@
-#include <unistd.h>
 #include <ctime>
+#include <algorithm>
+
+#include <unistd.h>
 
 #include "DUMIIFinger.h"
 #include "IRCBot.h"
@@ -28,13 +30,12 @@ namespace IRC
 				return;
 			}
 			
-			message_list_type out;
-			for(message_list_type::const_iterator iter = list.begin(); iter != list.end(); iter++)
-				split_string(out, *iter, "\n");
-			
-			for(message_list_type::const_iterator iter = out.begin(); iter != out.end(); iter++)
-				if(!(*iter).empty())
-					bot->say(*iter);
+			list.erase(std::remove(list.begin(), list.end(), ""));
+
+			for(message_list_type::const_iterator iter = list.begin();
+				iter != list.end();
+				iter++)
+				bot->say(*iter);
 		}
 	}
 	

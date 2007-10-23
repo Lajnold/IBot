@@ -41,13 +41,7 @@ namespace IRC
 		IRCSocket socket("\n");
 		socket.connect("dum.acc.umu.se", 79);
 		
-		socket.send("\r\n");
 		usleep(200000);
-		try
-		{
-			socket.receive(list);
-		}
-		catch (std::string e)
-		{}
+		socket.receive(list);
 	}
 }

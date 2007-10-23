@@ -1,9 +1,11 @@
 #include <unistd.h>
+#include <ctime>
 
 #include "DUMIIFinger.h"
 #include "IRCBot.h"
 #include "IRC_types.h"
 #include "IRCSocket.h"
+#include "ConnectionError.h"
 #include "utils.h"
 
 namespace IRC
@@ -41,7 +43,19 @@ namespace IRC
 		IRCSocket socket("\n");
 		socket.connect("dum.acc.umu.se", 79);
 		
-		usleep(200000);
-		socket.receive(list);
+		try
+		{
+			std::time_t max_time = std::time(NULL) + 1;
+
+			while(list.empty() && std::time(NULL) < max_time)
+			{
+				socket.receive(list);
+				usleep(40000);
+			}
+		}
+		catch(const ConnectionError &e)
+		{
+		    
+		}
 	}
 }

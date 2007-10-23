@@ -31,10 +31,8 @@ namespace IRC
 	void IRCSocket::connect(const std::string &address, const unsigned int port)
 	{
 		hostent *he = gethostbyname(address.c_str());
-		if(he == NULL)
-		{
+		if(!he)
 			throw ConnectionError("Could not find host");
-		}
 		
 		sockaddr_in addr;
 		addr.sin_family = AF_INET;

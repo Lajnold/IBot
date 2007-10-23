@@ -2,7 +2,6 @@
 #define CONNECTIONERROR_H
 
 #include <stdexcept>
-#include <string>
 
 namespace IRC
 {
@@ -10,7 +9,7 @@ namespace IRC
 	{
 		
 	public:
-		ConnectionError(const std::string &msg = "") : runtime_error(msg) { };
+		ConnectionError(const char *msg = "") : runtime_error(msg) { };
 	};
 }
 

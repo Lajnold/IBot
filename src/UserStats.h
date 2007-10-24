@@ -6,11 +6,10 @@
 
 #include "CommandHandler.h"
 #include "IRC_types.h"
+#include "IRCBot.h"
 
 namespace IRC
 {
-	class IRCBot;
-	
 	class UserStats : public CommandHandler
 	{
 		struct Stats

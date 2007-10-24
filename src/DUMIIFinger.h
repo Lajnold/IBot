@@ -3,11 +3,10 @@
 
 #include "CommandHandler.h"
 #include "IRC_types.h"
+#include "IRCBot.h"
 
 namespace IRC
 {
-	class IRCBot;
-	
 	class DUMIIFinger : public CommandHandler
 	{
 		void fill_who_list(message_list_type &list);

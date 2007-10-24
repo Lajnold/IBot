@@ -4,6 +4,7 @@ LIBS = -lboost_program_options
 
 BINARY = Bot
 OBJDIR = ../objs
+DEPDIR = deps
 
 
 SRCS = main.cpp\
@@ -28,8 +29,8 @@ $(OBJDIR)/%.o: %.cpp
 
 
 # Dependency handling
-deps/%.d: %.cpp
-	@mkdir -p deps
+$(DEPDIR)/%.d: %.cpp
+	@mkdir -p $(DEPDIR)
 	@echo Generating $@
 	@$(CC) -MM $< > $@
 

@@ -1,6 +1,6 @@
-CC=g++
-CFLAGS=-Wall
-LIBS=-lboost_program_options
+CC = g++
+CFLAGS = -Wall
+LIBS = -lboost_program_options
 
 BINARY = Bot
 

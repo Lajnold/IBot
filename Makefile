@@ -1,3 +1,3 @@
 
-Bot:
-	cd src; make
+all:
+	@cd src; make

@@ -28,7 +28,7 @@ $(BINARY): $(OBJS)
 deps/%.d: %.cpp
 	@mkdir -p deps
 	@echo Generating $@
-	@g++ -MM $< > $@
+	@$(CC) -MM $< > $@
 
 include $(SRCS:%.cpp=deps/%.d)
 

@@ -3,6 +3,7 @@ CFLAGS = -Wall
 LIBS = -lboost_program_options
 
 BINARY = Bot
+OBJDIR = ../objs
 
 
 SRCS = main.cpp\
@@ -14,15 +15,16 @@ SRCS = main.cpp\
 	utils.cpp\
 	DUMIIFinger.cpp
 
-OBJS = $(SRCS:.cpp=.o)
+OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
 
 $(BINARY): $(OBJS)
 	@echo Linking $(BINARY)
 	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
 
-%.o: %.cpp
-	$(CC) $(CFLAGS) -c $<
+$(OBJDIR)/%.o: %.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 
 # Dependency handling

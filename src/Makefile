@@ -18,3 +18,11 @@ HEADERS=IRCBot.h IRCSocket.h ConnectionError.h CommandHandler.h utils.h UserStat
 ../Bot: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
 
+
+
+# Dependency handling
+deps/%.d: %.cpp
+	@echo Generating $@
+	@g++ -MM $< > $@
+
+include $(SRCS:%.cpp=deps/%.d)

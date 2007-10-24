@@ -4,6 +4,7 @@ LIBS=-lboost_program_options
 
 BINARY = ../Bot
 
+
 SRCS = main.cpp\
 	IRCBot.cpp\
 	IRCSocket.cpp\
@@ -15,7 +16,7 @@ SRCS = main.cpp\
 
 OBJS = $(SRCS:.cpp=.o)
 
-HEADERS=IRCBot.h IRCSocket.h ConnectionError.h CommandHandler.h utils.h UserStats.h Time.h DUMIIFinger.h
+
 
 $(BINARY): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
@@ -28,3 +29,4 @@ deps/%.d: %.cpp
 	@g++ -MM $< > $@
 
 include $(SRCS:%.cpp=deps/%.d)
+

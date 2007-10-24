@@ -22,9 +22,9 @@ $(BINARY): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
 
 
-
 # Dependency handling
 deps/%.d: %.cpp
+	@mkdir -p deps
 	@echo Generating $@
 	@g++ -MM $< > $@
 

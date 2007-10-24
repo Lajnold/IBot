@@ -2,13 +2,11 @@
 #define IRC_BOT_H
 
 #include <string>
+#include <vector>
 
 #include "IRC_types.h"
 #include "IRCSocket.h"
-
-#include "Time.h"
-#include "UserStats.h"
-#include "DUMIIFinger.h"
+#include "CommandHandler.h"
 
 namespace IRC
 {
@@ -26,10 +24,8 @@ namespace IRC
 		const std::string nickname;
 		const std::string channel;
 		
-		UserStats stats;
-		Time time;
-		DUMIIFinger finger;
-		
+		std::vector<CommandHandler *> command_handlers;
+
 		void connect();
 		void send(std::string message);
 		
@@ -42,6 +38,7 @@ namespace IRC
 	public:
 
 		IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const char command_char);
+		~IRCBot();
 		
 		const std::string &get_nickname();
 		const std::string &get_channel();

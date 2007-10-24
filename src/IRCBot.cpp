@@ -1,18 +1,34 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "IRCBot.h"
 #include "IRC_types.h"
 #include "ConnectionError.h"
 #include "utils.h"
 
+#include "Time.h"
+#include "UserStats.h"
+#include "DUMIIFinger.h"
+
 namespace IRC
 {
 	IRCBot::IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const char command_char)
-	: running(true), socket("\r\n"), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel), stats(this, command_char), 
-		time(this, command_char), finger(this, command_char) 
+	: running(true), socket("\r\n"), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel)
 	{
-		
+		command_handlers.push_back(new UserStats(this, command_char));
+		command_handlers.push_back(new Time(this, command_char));
+		command_handlers.push_back(new DUMIIFinger(this, command_char));
+	}
+
+	IRCBot::~IRCBot()
+	{
+		for(std::vector<CommandHandler *>::iterator iter = command_handlers.begin();
+			iter != command_handlers.end();)
+		{
+			delete *iter;
+			iter = command_handlers.erase(iter);
+		}
 	}
 	
 	void IRCBot::connect()
@@ -63,9 +79,10 @@ namespace IRC
 
 	bool IRCBot::handle_msg(const message_list_type &input)
 	{
-		time.handle(input);
-		stats.handle(input);
-		finger.handle(input);
+		for(std::vector<CommandHandler *>::iterator iter = command_handlers.begin();
+			iter != command_handlers.end();
+			iter++)
+			(*iter)->handle(input);
 		
 		return true;
 	}

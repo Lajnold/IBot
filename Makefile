@@ -1,0 +1,3 @@
+
+Bot:
+	cd src; make

@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-Wall
 LIBS=-lboost_program_options
 
-BINARY = ../Bot
+BINARY = Bot
 
 
 SRCS = main.cpp\
@@ -18,7 +18,8 @@ OBJS = $(SRCS:.cpp=.o)
 
 
 $(BINARY): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
+	@echo Linking $(BINARY)
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $<

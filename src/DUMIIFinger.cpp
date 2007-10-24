@@ -41,16 +41,23 @@ namespace IRC
 	
 	void DUMIIFinger::fill_who_list(message_list_type &list)
 	{
-		IRCSocket socket("\n");
-		socket.connect("dum.acc.umu.se", 79);
-		
-		usleep(250000);
-		socket.receive(list);
-
-		if(list.size() < 3)
+		try
 		{
-		    usleep(100000);
-		    socket.receive(list);
+			IRCSocket socket("\n");
+			socket.connect("dum.acc.umu.se", 79);
+
+			usleep(250000);
+			socket.receive(list);
+
+			if(list.size() < 3)
+			{
+				usleep(100000);
+				socket.receive(list);
+			}
+		}
+		catch(const ConnectionError &e)
+		{
+
 		}
 	}
 }

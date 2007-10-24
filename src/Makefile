@@ -12,14 +12,16 @@ SRCS = main.cpp\
 	CommandHandler.cpp\
 	Time.cpp\
 	utils.cpp\
-	DUMIIFinger.cpp\
+	DUMIIFinger.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
 
-
 $(BINARY): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $<
 
 
 # Dependency handling

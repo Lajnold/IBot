@@ -32,7 +32,7 @@ $(OBJDIR)/%.o: %.cpp
 $(DEPDIR)/%.d: %.cpp
 	@mkdir -p $(DEPDIR)
 	@echo Generating $@
-	@$(CC) -MM $< > $@
+	@$(CC) -MM $< -MT $(OBJDIR)/$(<:.cpp=.o) -MF $@
 
-include $(SRCS:%.cpp=deps/%.d)
+include $(SRCS:%.cpp=$(DEPDIR)/%.d)
 

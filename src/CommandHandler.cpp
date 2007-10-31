@@ -18,7 +18,8 @@ namespace IRC
 	
 	bool CommandHandler::is_channel_msg(const message_list_type &input)
 	{
-		return is_msg(input) && strtolower(get_channel(input)) == strtolower(bot->get_channel());
+		return is_msg(input) &&
+			strtolower(get_channel(input)) == strtolower(bot->get_channel());
 	}
 
 	bool CommandHandler::is_command(const message_list_type &input)

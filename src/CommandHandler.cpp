@@ -45,6 +45,20 @@ namespace IRC
 		return input[3].substr(2);
 	}
 
+	std::string CommandHandler::get_message(const message_list_type &input)
+	{
+		assert(is_msg(input));
+
+		std::string message = input[3].substr(1);
+
+		for(message_list_type::const_iterator iter = input.begin() + 4;
+		    iter != input.end();
+		    iter++)
+			message += " " + *iter;
+
+		return message;
+	}
+
 	std::string CommandHandler::get_user(const message_list_type &input)
 	{
 		assert(is_msg(input));

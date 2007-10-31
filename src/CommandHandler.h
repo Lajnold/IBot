@@ -24,6 +24,7 @@ namespace IRC
 		
 		std::string get_channel(const message_list_type &input);
 		std::string get_command(const message_list_type &input);
+		std::string get_message(const message_list_type &input);
 		std::string get_user(const message_list_type &input);
 		
 	public:

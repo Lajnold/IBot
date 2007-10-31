@@ -1,6 +1,8 @@
 #include <fstream>
 #include <string>
 #include <cassert>
+#include <vector>
+#include <algorithm>
 
 #include <boost/lexical_cast.hpp>
 
@@ -33,8 +35,39 @@ namespace IRC
 
 		if(is_command(input, "words"))
 		{
-			std::string message = get_user(input) + " has written " + boost::lexical_cast<std::string>(get_user_word_count(input)) + " words.";
-			bot->say(message);
+			std::string to_send;
+
+			message_list_type message;
+			split_string(message, get_message(input), " ");
+
+			if(message.size() == 1)
+				to_send = get_user(input) + " has written " +
+				boost::lexical_cast<std::string>(get_user_word_count(input)) + 
+				" words.";
+			else if(message[1] == "top")
+			{
+				message_list_type list;
+				fill_top_list(list, 5);
+
+				to_send = "These are the top writers: ";
+
+				for(message_list_type::iterator iter = list.begin();
+				    iter != list.end();
+				    iter++)
+				{
+					to_send += *iter + " (" + 
+					boost::lexical_cast<std::string>(users[*iter].word_count) +
+					" words)";
+
+					if(iter + 1 != list.end())
+						to_send += ", ";
+				}
+					
+			}
+			else
+				to_send = message[1] + ": Invalid parameter for words.";
+
+			bot->say(to_send);
 		}
 	}
 	
@@ -93,5 +126,20 @@ namespace IRC
 	{
 		std::string user = get_user(input);
 		return get_word_count(user);
+	}
+
+	void UserStats::fill_top_list(message_list_type &out, int count)
+	{
+		std::vector<User> list;
+
+		for(user_map_type::const_iterator iter = users.begin();
+		    iter != users.end();
+		    iter++)
+			list.push_back(User((*iter).first, (*iter).second));
+
+		std::sort(list.begin(), list.end(), WordCountSort());
+
+		for(int i = 0; i < count && i < users.size(); i++)
+			out.push_back(list[i].name);
 	}
 }

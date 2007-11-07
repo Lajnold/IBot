@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "IRC_types.h"
-#include "IRCSocket.h"
+#include "Socket.h"
 #include "CommandHandler.h"
 
 namespace IRC
@@ -14,7 +14,7 @@ namespace IRC
 	{
 		bool running;
 		
-		IRCSocket socket;
+		Socket socket;
 		
 		const std::string message_delimiter;
 		

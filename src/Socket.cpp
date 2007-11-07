@@ -7,13 +7,13 @@
 #include <netdb.h>
 #include <netinet/in.h>
 
-#include "IRCSocket.h"
+#include "Socket.h"
 #include "IRC_types.h"
 #include "ConnectionError.h"
 
 namespace IRC
 {
-	IRCSocket::IRCSocket(const std::string &line_ending) : line_ending(line_ending)
+	Socket::Socket(const std::string &line_ending) : line_ending(line_ending)
 	{
 		m_socket = socket(PF_INET, SOCK_STREAM, 0);
 		if(m_socket == -1)
@@ -23,12 +23,12 @@ namespace IRC
 		}
 	}
 
-	IRCSocket::~IRCSocket()
+	Socket::~Socket()
 	{
 		close(m_socket);
 	}
 
-	void IRCSocket::connect(const std::string &address, const unsigned int port)
+	void Socket::connect(const std::string &address, const unsigned int port)
 	{
 		hostent *he = gethostbyname(address.c_str());
 		if(!he)
@@ -47,7 +47,7 @@ namespace IRC
 		}
 	}
 
-	void IRCSocket::send(const std::string &data)
+	void Socket::send(const std::string &data)
 	{
 		std::string to_send(data);
 		
@@ -57,7 +57,7 @@ namespace IRC
 		::send(m_socket, to_send.c_str(), to_send.size(), 0);
 	}
 
-	void IRCSocket::receive(message_list_type &out)
+	void Socket::receive(message_list_type &out)
 	{
 		char buf[2048];
 		int len = recv(m_socket, buf, sizeof(buf), 0);
@@ -71,17 +71,17 @@ namespace IRC
 			out.push_back(get_finished_packet());
 	}
 	
-	void IRCSocket::append_buffer(const char *data, const unsigned short len)
+	void Socket::append_buffer(const char *data, const unsigned short len)
 	{
 		buffer += std::string(data, data + len);
 	}
 	
-	bool IRCSocket::has_finished_packet()
+	bool Socket::has_finished_packet()
 	{
 		return buffer.find(line_ending) != std::string::npos;
 	}
 	
-	std::string IRCSocket::get_finished_packet()
+	std::string Socket::get_finished_packet()
 	{
 		assert(has_finished_packet());
 		
@@ -91,7 +91,7 @@ namespace IRC
 		return packet;
 	}
 	
-	void IRCSocket::clear_finished_packet()
+	void Socket::clear_finished_packet()
 	{
 		buffer = buffer.substr(buffer.find(line_ending) + 1);
 	}

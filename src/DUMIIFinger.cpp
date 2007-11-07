@@ -6,7 +6,7 @@
 #include "DUMIIFinger.h"
 #include "IRCBot.h"
 #include "IRC_types.h"
-#include "IRCSocket.h"
+#include "Socket.h"
 #include "ConnectionError.h"
 #include "utils.h"
 
@@ -43,7 +43,7 @@ namespace IRC
 	{
 		try
 		{
-			IRCSocket socket("\n");
+			Socket socket("\n");
 			socket.connect("dum.acc.umu.se", 79);
 
 			usleep(250000);

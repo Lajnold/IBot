@@ -9,7 +9,7 @@
 
 namespace IRC
 {
-	class IRCSocket
+	class Socket
 	{
 		int m_socket;
 		std::string buffer;
@@ -21,8 +21,8 @@ namespace IRC
 		void clear_finished_packet();
 		
 	public:
-		IRCSocket(const std::string &line_ending);
-		~IRCSocket();
+		Socket(const std::string &line_ending);
+		~Socket();
 		
 		void connect(const std::string & address, const unsigned int port);
 		void send(const std::string &data);

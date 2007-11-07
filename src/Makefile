@@ -9,7 +9,7 @@ DEPDIR = deps
 
 SRCS = main.cpp\
 	IRCBot.cpp\
-	IRCSocket.cpp\
+	Socket.cpp\
 	UserStats.cpp\
 	CommandHandler.cpp\
 	Time.cpp\

@@ -128,7 +128,7 @@ namespace IRC
 		return get_word_count(user);
 	}
 
-	void UserStats::fill_top_list(message_list_type &out, int count)
+	void UserStats::fill_top_list(message_list_type &out, size_t count)
 	{
 		std::vector<User> list;
 
@@ -139,7 +139,7 @@ namespace IRC
 
 		std::sort(list.begin(), list.end(), WordCountSort());
 
-		for(int i = 0; i < count && i < users.size(); i++)
+		for(size_t i = 0; i < count && i < users.size(); i++)
 			out.push_back(list[i].name);
 	}
 }

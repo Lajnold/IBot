@@ -34,7 +34,7 @@ namespace IRC
 		unsigned int get_word_count_in_msg(const message_list_type &input);
 		unsigned int get_word_count(std::string user);
 		unsigned int get_user_word_count(const message_list_type &input);
-		void fill_top_list(message_list_type &out, int count);
+		void fill_top_list(message_list_type &out, size_t count);
 		
 		void update_user_word_count(const message_list_type &input);
 		void increase_word_count(std::string user, unsigned int count);

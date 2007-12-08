@@ -12,6 +12,7 @@ struct BotOptions
 	
 	std::string nickname;
 	std::string channel;
+	std::string owner;
 	
 	char command_char;
 };
@@ -27,6 +28,7 @@ bool parse_commandline(int argc, char *argv[], BotOptions &options)
 		("port", po::value<unsigned short>(&options.port)->default_value(6667), "the port to connect to")
 		("nick", po::value<std::string>(&options.nickname)->default_value("Amon"), "the nickname the bot should use")
 		("channel", po::value<std::string>(&options.channel), "the channel the bot should be in")
+		("owner", po::value<std::string>(&options.owner)->default_value(""), "the owner of the bot")
 		("commandchar", po::value<char>(&options.command_char)->default_value('!'), "the character the bot should react on");
 	
 	po::variables_map vm;
@@ -60,6 +62,6 @@ int main(int argc, char *argv[])
 	if(!parse_commandline(argc, argv, options))
 		return 0;
 	
-	IRC::IRCBot bot(options.address, options.port, options.nickname, options.channel, options.command_char);
+	IRC::IRCBot bot(options.address, options.port, options.nickname, options.channel, options.owner, options.command_char);
 	bot.run();
 }

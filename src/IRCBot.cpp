@@ -13,8 +13,8 @@
 
 namespace IRC
 {
-	IRCBot::IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const char command_char)
-	: running(true), socket("\r\n"), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel)
+	IRCBot::IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const std::string &owner, const char command_char)
+	: running(true), socket("\r\n"), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel), owner(owner)
 	{
 		command_handlers.push_back(new UserStats(this, command_char));
 		command_handlers.push_back(new Time(this, command_char));
@@ -48,6 +48,11 @@ namespace IRC
 	const std::string &IRCBot::get_nickname()
 	{
 		return nickname;
+	}
+
+	const std::string &IRCBot::get_owner()
+	{
+		return owner;
 	}
 	
 	void IRCBot::send(std::string message)

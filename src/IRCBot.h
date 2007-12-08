@@ -23,6 +23,7 @@ namespace IRC
 		
 		const std::string nickname;
 		const std::string channel;
+		const std::string owner;
 		
 		std::vector<CommandHandler *> command_handlers;
 
@@ -37,11 +38,12 @@ namespace IRC
 		
 	public:
 
-		IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const char command_char);
+		IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const std::string &owner, const char command_char);
 		~IRCBot();
 		
 		const std::string &get_nickname();
 		const std::string &get_channel();
+		const std::string &get_owner();
 		
 		void say(const std::string &input);
 		

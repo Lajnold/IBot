@@ -10,6 +10,7 @@
 #include "Time.h"
 #include "UserStats.h"
 #include "DUMIIFinger.h"
+#include "Say.h"
 
 namespace IRC
 {
@@ -19,6 +20,7 @@ namespace IRC
 		command_handlers.push_back(new UserStats(this, command_char));
 		command_handlers.push_back(new Time(this, command_char));
 		command_handlers.push_back(new DUMIIFinger(this, command_char));
+		command_handlers.push_back(new Say(this, command_char));
 	}
 
 	IRCBot::~IRCBot()

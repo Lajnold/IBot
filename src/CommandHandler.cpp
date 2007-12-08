@@ -34,20 +34,24 @@ namespace IRC
 
 	std::string CommandHandler::get_channel(const message_list_type &input)
 	{
-		assert(is_msg(input));
+		if(!is_msg(input))
+			return "";
+
 		return input[2];
 	}
 
 	std::string CommandHandler::get_command(const message_list_type &input)
 	{
-		assert(is_command(input));
-		
+		if(!is_command(input))
+			return "";
+
 		return input[3].substr(2);
 	}
 
 	std::string CommandHandler::get_message(const message_list_type &input)
 	{
-		assert(is_msg(input));
+		if(!is_msg(input))
+			return "";
 
 		std::string message = input[3].substr(1);
 
@@ -61,7 +65,8 @@ namespace IRC
 
 	std::string CommandHandler::get_user(const message_list_type &input)
 	{
-		assert(is_msg(input));
+		if(!is_msg(input))
+			return "";
 		
 		size_t pos = input[0].find("!");
 		return input[0].substr(2, pos - 2);

@@ -10,10 +10,10 @@ DEPDIR = deps
 SRCS = main.cpp\
 	IRCBot.cpp\
 	Socket.cpp\
-	UserStats.cpp\
 	CommandHandler.cpp\
-	Time.cpp\
 	utils.cpp\
+	Time.cpp\
+	UserStats.cpp\
 	DUMIIFinger.cpp\
 	Say.cpp
 

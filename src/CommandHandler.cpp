@@ -8,8 +8,11 @@
 
 namespace IRC
 {
-	std::string s;
-	CommandHandler::CommandHandler(IRCBot *bot, const char command_character) : command_char(command_character), bot(bot) { }	
+	CommandHandler::CommandHandler(IRCBot *bot, const char command_character)
+		: command_char(command_character), bot(bot)
+	{
+
+	}	
 	
 	bool CommandHandler::is_msg(const message_list_type &input)
 	{
@@ -19,7 +22,7 @@ namespace IRC
 	bool CommandHandler::is_channel_msg(const message_list_type &input)
 	{
 		return is_msg(input) &&
-			strtolower(get_channel(input)) == strtolower(bot->get_channel());
+			string_to_lower(get_channel(input)) == string_to_lower(bot->get_channel());
 	}
 
 	bool CommandHandler::is_command(const message_list_type &input)

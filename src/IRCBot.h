@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "BotOptions.h"
 #include "IRC_types.h"
 #include "Socket.h"
 #include "CommandHandler.h"
@@ -16,14 +17,7 @@ namespace IRC
 		
 		Socket socket;
 		
-		const std::string message_delimiter;
-		
-		const std::string address;
-		const unsigned short port;
-		
-		const std::string nickname;
-		const std::string channel;
-		const std::string owner;
+		const BotOptions settings;
 		
 		std::vector<CommandHandler *> command_handlers;
 
@@ -38,7 +32,7 @@ namespace IRC
 		
 	public:
 
-		IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const std::string &owner, const char command_char);
+		IRCBot(const BotOptions &options);
 		~IRCBot();
 		
 		const std::string &get_nickname();

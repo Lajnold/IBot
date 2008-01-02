@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "IRCBot.h"
+#include "BotOptions.h"
 #include "IRC_types.h"
 #include "ConnectionError.h"
 #include "utils.h"
@@ -14,14 +15,14 @@
 
 namespace IRC
 {
-	IRCBot::IRCBot(const std::string &address, const unsigned int port, const std::string &nickname, const std::string &channel, const std::string &owner, const char command_char)
-	: running(true), socket("\r\n"), message_delimiter(" "), address(address), port(port), nickname(nickname), channel(channel), owner(owner)
+	IRCBot::IRCBot(const BotOptions &options)
+		: running(true), socket("\r\n"), settings(options)
 	{
-		command_handlers.push_back(new UserStats(this, command_char));
-		command_handlers.push_back(new Time(this, command_char));
-		command_handlers.push_back(new DUMIIFinger(this, command_char));
-		command_handlers.push_back(new Say(this, command_char));
-	}
+		command_handlers.push_back(new UserStats(this, settings.command_char));
+		command_handlers.push_back(new Time(this, settings.command_char));
+		command_handlers.push_back(new DUMIIFinger(this, settings.command_char));
+		command_handlers.push_back(new Say(this, settings.command_char));
+	};
 
 	IRCBot::~IRCBot()
 	{
@@ -35,26 +36,26 @@ namespace IRC
 	
 	void IRCBot::connect()
 	{
-		socket.connect(address.c_str(), port);
+		socket.connect(settings.address.c_str(), settings.port);
 		
-		send("NICK " + nickname);
-		send("USER " + nickname + " 0 * :" + nickname);
-		send("JOIN " + channel);
+		send("NICK " + settings.nickname);
+		send("USER " + settings.nickname + " 0 * :" + settings.nickname);
+		send("JOIN " + settings.channel);
 	}
 	
 	const std::string &IRCBot::get_channel()
 	{
-		return channel;
+		return settings.channel;
 	}
 	
 	const std::string &IRCBot::get_nickname()
 	{
-		return nickname;
+		return settings.nickname;
 	}
 
 	const std::string &IRCBot::get_owner()
 	{
-		return owner;
+		return settings.owner;
 	}
 	
 	void IRCBot::send(std::string message)
@@ -64,7 +65,7 @@ namespace IRC
 	
 	void IRCBot::say(const std::string &message)
 	{
-		std::string channel_message = "PRIVMSG " + channel + " :" + message;
+		std::string channel_message = "PRIVMSG " + settings.channel + " :" + message;
 		send(channel_message);
 	}
 	
@@ -97,7 +98,7 @@ namespace IRC
 	void IRCBot::parse_IRC_message(const std::string &input)
 	{
 		message_list_type parameters;
-		split_string(parameters, input, message_delimiter);
+		split_string(parameters, input, " ");
 		
 		if(handle_ping(parameters)) { }
 		else if(handle_msg(parameters)) { }

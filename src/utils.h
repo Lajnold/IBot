@@ -9,7 +9,7 @@ namespace IRC
 {
 	void split_string(message_list_type &out, const std::string &input, const std::string &delimiter);
 	
-	std::string strtolower(std::string s);
+	std::string string_to_lower(std::string s);
 }
 
 #endif

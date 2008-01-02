@@ -6,11 +6,12 @@ BINARY = Bot
 OBJDIR = ../objs
 DEPDIR = deps
 
-
 SRCS = main.cpp\
+	BotOptions.cpp\
 	IRCBot.cpp\
 	Socket.cpp\
 	CommandHandler.cpp\
+	Message.cpp\
 	utils.cpp\
 	Time.cpp\
 	UserStats.cpp\
@@ -19,7 +20,6 @@ SRCS = main.cpp\
 
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
-
 $(BINARY): $(OBJS)
 	@echo Linking $(BINARY)
 	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
@@ -27,7 +27,6 @@ $(BINARY): $(OBJS)
 $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
-
 
 # Dependency handling
 $(DEPDIR)/%.d: %.cpp

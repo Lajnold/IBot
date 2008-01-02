@@ -14,8 +14,8 @@ namespace IRC
 
 	void Say::handle(const message_list_type &input)
 	{
-		std::string owner = strtolower(bot->get_owner());
-		if((owner.empty() || owner == strtolower(get_user(input))) && is_command(input, "say"))
+		std::string owner = string_to_lower(bot->get_owner());
+		if((owner.empty() || owner == string_to_lower(get_user(input))) && is_command(input, "say"))
 		{
 			std::string message = get_message(input);
 			bot->say(message.substr(5));

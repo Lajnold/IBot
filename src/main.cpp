@@ -3,11 +3,11 @@
 
 int main(int argc, char *argv[])
 {
-	IRC::BotOptions options;
+	IRC::core::BotOptions options;
 	
-	if(!IRC::parse_commandline(argc, argv, options))
+	if(!IRC::core::parse_commandline(argc, argv, options))
 		return 0;
 
-	IRC::IRCBot bot(options);
+	IRC::core::IRCBot bot(options);
 	bot.run();
 }

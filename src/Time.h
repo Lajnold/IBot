@@ -9,14 +9,14 @@
 
 namespace IRC
 {
-	class Time : public CommandHandler
+	class Time : public IRC::core::CommandHandler
 	{
 		
 		std::string get_time_string();
 		
 	public:
 	
-		Time(IRCBot *bot, const char command_char);
+		Time(IRC::core::IRCBot *bot, const char command_char);
 		
 		void handle(const message_list_type &input);
 	};

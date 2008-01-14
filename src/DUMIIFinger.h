@@ -7,12 +7,12 @@
 
 namespace IRC
 {
-	class DUMIIFinger : public CommandHandler
+	class DUMIIFinger : public IRC::core::CommandHandler
 	{
 		void fill_who_list(message_list_type &list);
 		
 	public:
-		DUMIIFinger(IRCBot *bot, const char command_char);
+		DUMIIFinger(IRC::core::IRCBot *bot, const char command_char);
 		
 		void handle(const message_list_type &input);
 	};

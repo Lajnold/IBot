@@ -11,38 +11,41 @@
 
 namespace IRC
 {
-	class IRCBot
+	namespace core
 	{
-		bool running;
-		
-		Socket socket;
-		
-		const BotOptions settings;
-		
-		std::vector<CommandHandler *> command_handlers;
+		class IRCBot
+		{
+			bool running;
+			
+			Socket socket;
+			
+			const BotOptions settings;
+			
+			std::vector<CommandHandler *> command_handlers;
 
-		void connect();
-		void send(std::string message);
-		
-		void parse_IRC_message(const std::string &input);
-		void parse_data(const message_list_type &input);
-		
-		bool handle_ping(const message_list_type &input);
-		bool handle_msg(const message_list_type &input);
-		
-	public:
+			void connect();
+			void send(std::string message);
+			
+			void parse_IRC_message(const std::string &input);
+			void parse_data(const message_list_type &input);
+			
+			bool handle_ping(const message_list_type &input);
+			bool handle_msg(const message_list_type &input);
+			
+		public:
 
-		IRCBot(const BotOptions &options);
-		~IRCBot();
-		
-		const std::string &get_nickname();
-		const std::string &get_channel();
-		const std::string &get_owner();
-		
-		void say(const std::string &input);
-		
-		void run();
-	};
+			IRCBot(const BotOptions &options);
+			~IRCBot();
+			
+			const std::string &get_nickname();
+			const std::string &get_channel();
+			const std::string &get_owner();
+			
+			void say(const std::string &input);
+			
+			void run();
+		};
+	}
 }
 
 #endif

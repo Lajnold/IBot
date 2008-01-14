@@ -4,7 +4,7 @@
 
 #include "BotOptions.h"
 
-bool IRC::parse_commandline(int argc, char *argv[], BotOptions &options)
+bool IRC::core::parse_commandline(int argc, char *argv[], BotOptions &options)
 {
 	namespace po = boost::program_options;
 

@@ -10,7 +10,7 @@
 
 namespace IRC
 {
-	class UserStats : public CommandHandler
+	class UserStats : public IRC::core::CommandHandler
 	{
 		struct Stats
 		{
@@ -56,7 +56,7 @@ namespace IRC
 		};
 		
 	public:
-		UserStats(IRCBot *bot, const char command_char);
+		UserStats(IRC::core::IRCBot *bot, const char command_char);
 		
 		void handle(const message_list_type &input);
 	};

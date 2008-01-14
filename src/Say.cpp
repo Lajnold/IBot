@@ -5,20 +5,19 @@
 #include "IRCBot.h"
 #include "utils.h"
 
-namespace IRC
+using namespace IRC;
+
+Say::Say(IRC::core::IRCBot *bot, const char command_char) : CommandHandler(bot, command_char)
 {
-	Say::Say(IRCBot *bot, const char command_char) : CommandHandler(bot, command_char)
-	{
 
-	}
+}
 
-	void Say::handle(const message_list_type &input)
+void Say::handle(const message_list_type &input)
+{
+	std::string owner = string_to_lower(bot->get_owner());
+	if((owner.empty() || owner == string_to_lower(get_user(input))) && is_command(input, "say"))
 	{
-		std::string owner = string_to_lower(bot->get_owner());
-		if((owner.empty() || owner == string_to_lower(get_user(input))) && is_command(input, "say"))
-		{
-			std::string message = get_message(input);
-			bot->say(message.substr(5));
-		}
+		std::string message = get_message(input);
+		bot->say(message.substr(5));
 	}
 }

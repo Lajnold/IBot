@@ -18,6 +18,7 @@ void Say::handle(const message_list_type &input)
 	if((owner.empty() || owner == string_to_lower(get_user(input))) && is_command(input, "say"))
 	{
 		std::string message = get_message(input);
-		bot->say(message.substr(5));
+		if(message.size() > 5)
+			bot->say(message.substr(5));
 	}
 }

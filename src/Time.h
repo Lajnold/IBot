@@ -18,7 +18,7 @@ namespace IRC
 	
 		Time(IRC::core::IRCBot *bot, const char command_char);
 		
-		void handle(const packet_t &input);
+		void handle(const IRC::core::packet_t &input);
 	};
 }
 

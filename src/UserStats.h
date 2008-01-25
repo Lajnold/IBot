@@ -31,12 +31,12 @@ namespace IRC
 		user_map_type users;
 		const std::string filename;
 		
-		unsigned int get_word_count_in_msg(const packet_t &input);
+		unsigned int get_word_count_in_msg(const IRC::core::packet_t &input);
 		unsigned int get_word_count(std::string user);
-		unsigned int get_user_word_count(const packet_t &input);
-		void fill_top_list(packet_t &out, size_t count);
+		unsigned int get_user_word_count(const IRC::core::packet_t &input);
+		void fill_top_list(IRC::core::packet_t &out, size_t count);
 		
-		void update_user_word_count(const packet_t &input);
+		void update_user_word_count(const IRC::core::packet_t &input);
 		void increase_word_count(std::string user, unsigned int count);
 
 		struct WordCountSort
@@ -58,7 +58,7 @@ namespace IRC
 	public:
 		UserStats(IRC::core::IRCBot *bot, const char command_char);
 		
-		void handle(const packet_t &input);
+		void handle(const IRC::core::packet_t &input);
 	};
 }
 

@@ -12,8 +12,9 @@
 #include "IRCBot.h"
 
 using namespace IRC;
+using namespace IRC::core;
 
-UserStats::UserStats(IRC::core::IRCBot *bot, const char command_char) : CommandHandler(bot, command_char), filename("stats.txt")
+UserStats::UserStats(::IRCBot *bot, const char command_char) : CommandHandler(bot, command_char), filename("stats.txt")
 {
 	std::ifstream file(filename.c_str());
 	if(!file.is_open())
@@ -28,7 +29,7 @@ UserStats::UserStats(IRC::core::IRCBot *bot, const char command_char) : CommandH
 	}
 }
 
-void UserStats::handle(const packet_t &input)
+void UserStats::handle(const ::packet_t &input)
 {
 	if(is_channel_msg(input))
 		update_user_word_count(input);
@@ -38,7 +39,7 @@ void UserStats::handle(const packet_t &input)
 		std::string to_send;
 
 		packet_t message;
-		split_string(message, get_message(input), " ");
+		utils::split_string(message, get_message(input), " ");
 
 		if(message.size() == 1)
 			to_send = get_user(input) + " has written " +
@@ -101,7 +102,7 @@ unsigned int UserStats::get_word_count_in_msg(const packet_t &input)
 		message += " " + *iter;
 	
 	packet_t splitted_message;
-	split_string(splitted_message, message, " ");
+	utils::split_string(splitted_message, message, " ");
 	
 	for(packet_t::const_iterator iter = splitted_message.begin(); iter != splitted_message.end(); iter++)
 	{

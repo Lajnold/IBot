@@ -22,7 +22,7 @@ bool CommandHandler::is_msg(const packet_t &input)
 bool CommandHandler::is_channel_msg(const packet_t &input)
 {
 	return is_msg(input) &&
-		string_to_lower(get_channel(input)) == string_to_lower(bot->get_channel());
+		IRC::utils::string_to_lower(get_channel(input)) == IRC::utils::string_to_lower(bot->get_channel());
 }
 
 bool CommandHandler::is_command(const packet_t &input)

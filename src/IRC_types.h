@@ -6,7 +6,10 @@
 
 namespace IRC
 {
-	typedef std::vector<std::string> packet_t;
+	namespace core
+	{
+		typedef std::vector<std::string> packet_t;
+	}
 }
 
 #endif

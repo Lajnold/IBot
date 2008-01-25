@@ -98,7 +98,7 @@ bool IRCBot::handle_msg(const packet_t &input)
 void IRCBot::parse_IRC_message(const std::string &input)
 {
 	packet_t parameters;
-	split_string(parameters, input, " ");
+	IRC::utils::split_string(parameters, input, " ");
 	
 	if(handle_ping(parameters)) { }
 	else if(handle_msg(parameters)) { }

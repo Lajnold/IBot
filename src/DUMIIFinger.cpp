@@ -11,13 +11,14 @@
 #include "utils.h"
 
 using namespace IRC;
+using namespace IRC::core;
 
-DUMIIFinger::DUMIIFinger(IRC::core::IRCBot *bot, const char command_char) : CommandHandler(bot, command_char)
+DUMIIFinger::DUMIIFinger(::IRCBot *bot, const char command_char) : CommandHandler(bot, command_char)
 {
 	
 }
 
-void DUMIIFinger::handle(const packet_t &input)
+void DUMIIFinger::handle(const ::packet_t &input)
 {
 	if(is_command(input, "who"))
 	{
@@ -39,7 +40,7 @@ void DUMIIFinger::handle(const packet_t &input)
 	}
 }
 
-void DUMIIFinger::fill_who_list(packet_t &list)
+void DUMIIFinger::fill_who_list(::packet_t &list)
 {
 	try
 	{

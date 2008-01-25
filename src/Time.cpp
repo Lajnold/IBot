@@ -13,7 +13,7 @@ Time::Time(IRC::core::IRCBot *bot, const char command_char) : CommandHandler(bot
 
 }
 	
-void Time::handle(const packet_t &input)
+void Time::handle(const IRC::core::packet_t &input)
 {
 	if(is_command(input, "time"))
 	{

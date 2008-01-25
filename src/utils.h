@@ -7,9 +7,11 @@
 
 namespace IRC
 {
-	void split_string(packet_t &out, const std::string &input, const std::string &delimiter);
-	
-	std::string string_to_lower(std::string s);
+	namespace utils
+	{
+		void split_string(IRC::core::packet_t &out, const std::string &input, const std::string &delimiter);
+		std::string string_to_lower(std::string s);
+	}
 }
 
 #endif

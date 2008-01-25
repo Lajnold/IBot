@@ -27,10 +27,10 @@ namespace IRC
 			void send(std::string message);
 			
 			void parse_IRC_message(const std::string &input);
-			void parse_data(const message_list_type &input);
+			void parse_data(const packet_t &input);
 			
-			bool handle_ping(const message_list_type &input);
-			bool handle_msg(const message_list_type &input);
+			bool handle_ping(const packet_t &input);
+			bool handle_msg(const packet_t &input);
 			
 		public:
 

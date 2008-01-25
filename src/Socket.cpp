@@ -57,7 +57,7 @@ namespace IRC
 		::send(m_socket, to_send.c_str(), to_send.size(), 0);
 	}
 
-	void Socket::receive(message_list_type &out)
+	void Socket::receive(packet_t &out)
 	{
 		char buf[2048];
 		int len = recv(m_socket, buf, sizeof(buf), 0);

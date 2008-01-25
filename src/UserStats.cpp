@@ -28,7 +28,7 @@ UserStats::UserStats(IRC::core::IRCBot *bot, const char command_char) : CommandH
 	}
 }
 
-void UserStats::handle(const message_list_type &input)
+void UserStats::handle(const packet_t &input)
 {
 	if(is_channel_msg(input))
 		update_user_word_count(input);
@@ -37,7 +37,7 @@ void UserStats::handle(const message_list_type &input)
 	{
 		std::string to_send;
 
-		message_list_type message;
+		packet_t message;
 		split_string(message, get_message(input), " ");
 
 		if(message.size() == 1)
@@ -46,12 +46,12 @@ void UserStats::handle(const message_list_type &input)
 			" words.";
 		else if(message[1] == "top")
 		{
-			message_list_type list;
+			packet_t list;
 			fill_top_list(list, 5);
 
 			to_send = "These are the top writers: ";
 
-			for(message_list_type::iterator iter = list.begin();
+			for(packet_t::iterator iter = list.begin();
 				iter != list.end();
 				iter++)
 			{
@@ -90,20 +90,20 @@ unsigned int UserStats::get_word_count(std::string user)
 	return users[user].word_count;
 }
 
-unsigned int UserStats::get_word_count_in_msg(const message_list_type &input)
+unsigned int UserStats::get_word_count_in_msg(const packet_t &input)
 {
 	assert(is_msg(input));
 	
 	unsigned int count = 0;
 	std::string message = input[3];
 	
-	for(message_list_type::const_iterator iter = input.begin() + 4; iter != input.end(); iter++)
+	for(packet_t::const_iterator iter = input.begin() + 4; iter != input.end(); iter++)
 		message += " " + *iter;
 	
-	message_list_type splitted_message;
+	packet_t splitted_message;
 	split_string(splitted_message, message, " ");
 	
-	for(message_list_type::const_iterator iter = splitted_message.begin(); iter != splitted_message.end(); iter++)
+	for(packet_t::const_iterator iter = splitted_message.begin(); iter != splitted_message.end(); iter++)
 	{
 		if((*iter).find_first_not_of(" \t") != std::string::npos)
 			count++;
@@ -112,7 +112,7 @@ unsigned int UserStats::get_word_count_in_msg(const message_list_type &input)
 	return count;
 }
 
-void UserStats::update_user_word_count(const message_list_type &input)
+void UserStats::update_user_word_count(const packet_t &input)
 {
 	assert(is_msg(input));
 	
@@ -122,13 +122,13 @@ void UserStats::update_user_word_count(const message_list_type &input)
 	increase_word_count(user, count);
 }
 
-unsigned int UserStats::get_user_word_count(const message_list_type &input)
+unsigned int UserStats::get_user_word_count(const packet_t &input)
 {
 	std::string user = get_user(input);
 	return get_word_count(user);
 }
 
-void UserStats::fill_top_list(message_list_type &out, size_t count)
+void UserStats::fill_top_list(packet_t &out, size_t count)
 {
 	std::vector<User> list;
 

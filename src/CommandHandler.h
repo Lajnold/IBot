@@ -19,20 +19,20 @@ namespace IRC
 		protected:
 			IRCBot *bot;
 			
-			bool is_msg(const message_list_type &input);
-			bool is_channel_msg(const message_list_type &input);
-			bool is_command(const message_list_type &input);
-			bool is_command(const message_list_type &input, const std::string &command);
+			bool is_msg(const packet_t &input);
+			bool is_channel_msg(const packet_t &input);
+			bool is_command(const packet_t &input);
+			bool is_command(const packet_t &input, const std::string &command);
 			
-			std::string get_channel(const message_list_type &input);
-			std::string get_command(const message_list_type &input);
-			std::string get_message(const message_list_type &input);
-			std::string get_user(const message_list_type &input);
+			std::string get_channel(const packet_t &input);
+			std::string get_command(const packet_t &input);
+			std::string get_message(const packet_t &input);
+			std::string get_user(const packet_t &input);
 			
 		public:
 			CommandHandler(IRCBot *bot, const char command_character);
 			virtual ~CommandHandler() { };
-			virtual void handle(const message_list_type &input) = 0;
+			virtual void handle(const packet_t &input) = 0;
 		};
 	}
 }

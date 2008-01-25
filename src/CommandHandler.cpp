@@ -14,28 +14,28 @@ CommandHandler::CommandHandler(IRCBot *bot, const char command_character)
 
 }	
 
-bool CommandHandler::is_msg(const message_list_type &input)
+bool CommandHandler::is_msg(const packet_t &input)
 {
 	return input.size() >= 4 && input[1] == "PRIVMSG";
 }
 
-bool CommandHandler::is_channel_msg(const message_list_type &input)
+bool CommandHandler::is_channel_msg(const packet_t &input)
 {
 	return is_msg(input) &&
 		string_to_lower(get_channel(input)) == string_to_lower(bot->get_channel());
 }
 
-bool CommandHandler::is_command(const message_list_type &input)
+bool CommandHandler::is_command(const packet_t &input)
 {
 	return is_msg(input) && input[3][1] == command_char;
 }
 
-bool CommandHandler::is_command(const message_list_type &input, const std::string &command)
+bool CommandHandler::is_command(const packet_t &input, const std::string &command)
 {
 	return is_command(input) && get_command(input) == command;
 }
 
-std::string CommandHandler::get_channel(const message_list_type &input)
+std::string CommandHandler::get_channel(const packet_t &input)
 {
 	if(!is_msg(input))
 		return "";
@@ -43,7 +43,7 @@ std::string CommandHandler::get_channel(const message_list_type &input)
 	return input[2];
 }
 
-std::string CommandHandler::get_command(const message_list_type &input)
+std::string CommandHandler::get_command(const packet_t &input)
 {
 	if(!is_command(input))
 		return "";
@@ -51,14 +51,14 @@ std::string CommandHandler::get_command(const message_list_type &input)
 	return input[3].substr(2);
 }
 
-std::string CommandHandler::get_message(const message_list_type &input)
+std::string CommandHandler::get_message(const packet_t &input)
 {
 	if(!is_msg(input))
 		return "";
 
 	std::string message = input[3].substr(1);
 
-	for(message_list_type::const_iterator iter = input.begin() + 4;
+	for(packet_t::const_iterator iter = input.begin() + 4;
 		iter != input.end();
 		iter++)
 		message += " " + *iter;
@@ -66,7 +66,7 @@ std::string CommandHandler::get_message(const message_list_type &input)
 	return message;
 }
 
-std::string CommandHandler::get_user(const message_list_type &input)
+std::string CommandHandler::get_user(const packet_t &input)
 {
 	if(!is_msg(input))
 		return "";

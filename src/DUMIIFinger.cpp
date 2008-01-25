@@ -17,11 +17,11 @@ DUMIIFinger::DUMIIFinger(IRC::core::IRCBot *bot, const char command_char) : Comm
 	
 }
 
-void DUMIIFinger::handle(const message_list_type &input)
+void DUMIIFinger::handle(const packet_t &input)
 {
 	if(is_command(input, "who"))
 	{
-		message_list_type list;
+		packet_t list;
 		fill_who_list(list);
 		
 		if(list.size() < 3)
@@ -32,14 +32,14 @@ void DUMIIFinger::handle(const message_list_type &input)
 		
 		list.erase(std::remove(list.begin(), list.end(), ""));
 
-		for(message_list_type::const_iterator iter = list.begin();
+		for(packet_t::const_iterator iter = list.begin();
 			iter != list.end();
 			iter++)
 			bot->say(*iter);
 	}
 }
 
-void DUMIIFinger::fill_who_list(message_list_type &list)
+void DUMIIFinger::fill_who_list(packet_t &list)
 {
 	try
 	{

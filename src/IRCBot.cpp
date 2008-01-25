@@ -69,7 +69,7 @@ void IRCBot::say(const std::string &message)
 	send(channel_message);
 }
 
-bool IRCBot::handle_ping(const message_list_type &input)
+bool IRCBot::handle_ping(const packet_t &input)
 {
 	if(input.size() < 1 || input[0] != "\nPING")
 		return false;
@@ -85,7 +85,7 @@ bool IRCBot::handle_ping(const message_list_type &input)
 	return true;
 }
 
-bool IRCBot::handle_msg(const message_list_type &input)
+bool IRCBot::handle_msg(const packet_t &input)
 {
 	for(std::vector<CommandHandler *>::iterator iter = command_handlers.begin();
 		iter != command_handlers.end();
@@ -97,16 +97,16 @@ bool IRCBot::handle_msg(const message_list_type &input)
 
 void IRCBot::parse_IRC_message(const std::string &input)
 {
-	message_list_type parameters;
+	packet_t parameters;
 	split_string(parameters, input, " ");
 	
 	if(handle_ping(parameters)) { }
 	else if(handle_msg(parameters)) { }
 }
 
-void IRCBot::parse_data(const message_list_type &input)
+void IRCBot::parse_data(const packet_t &input)
 {		
-	for(message_list_type::const_iterator iter = input.begin(); iter != input.end(); iter++)
+	for(packet_t::const_iterator iter = input.begin(); iter != input.end(); iter++)
 	{
 		std::cout << *iter << std::endl;
 		parse_IRC_message(*iter);
@@ -125,7 +125,7 @@ void IRCBot::run()
 		running = false;
 	}
 	
-	message_list_type messages;	
+	packet_t messages;	
 	
 	while(running)
 	{

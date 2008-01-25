@@ -6,7 +6,7 @@
 
 namespace IRC
 {
-	typedef std::vector<std::string> message_list_type;
+	typedef std::vector<std::string> packet_t;
 }
 
 #endif

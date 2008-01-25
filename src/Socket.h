@@ -26,7 +26,7 @@ namespace IRC
 		
 		void connect(const std::string & address, const unsigned int port);
 		void send(const std::string &data);
-		void receive(message_list_type &out);
+		void receive(packet_t &out);
 	};
 }
 

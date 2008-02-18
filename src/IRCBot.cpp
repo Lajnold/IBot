@@ -12,6 +12,7 @@
 #include "UserStats.h"
 #include "DUMIIFinger.h"
 #include "Say.h"
+#include "OPify.h"
 
 using namespace IRC::core;
 
@@ -22,6 +23,7 @@ IRCBot::IRCBot(const BotOptions &options)
 	command_handlers.push_back(new Time(this, settings.command_char));
 	command_handlers.push_back(new DUMIIFinger(this, settings.command_char));
 	command_handlers.push_back(new Say(this, settings.command_char));
+	command_handlers.push_back(new OPify(this, settings.command_char));
 };
 
 IRCBot::~IRCBot()
@@ -67,6 +69,11 @@ void IRCBot::say(const std::string &message)
 {
 	std::string channel_message = "PRIVMSG " + settings.channel + " :" + message;
 	send(channel_message);
+}
+
+void IRCBot::raw_command(const std::string &command)
+{
+	send(command);
 }
 
 bool IRCBot::handle_ping(const packet_t &input)

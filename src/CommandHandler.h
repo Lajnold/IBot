@@ -15,7 +15,6 @@ namespace IRC
 		{
 			const char command_char;
 			
-			
 		protected:
 			IRCBot *bot;
 			

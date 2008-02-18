@@ -16,7 +16,8 @@ SRCS = main.cpp\
 	Time.cpp\
 	UserStats.cpp\
 	DUMIIFinger.cpp\
-	Say.cpp
+	Say.cpp\
+	OPify.cpp
 
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 

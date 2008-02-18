@@ -42,6 +42,7 @@ namespace IRC
 			const std::string &get_owner();
 			
 			void say(const std::string &input);
+			void raw_command(const std::string &command);
 			
 			void run();
 		};

@@ -18,7 +18,7 @@ IRC::OPify::OPify(IRC::core::IRCBot *bot, const char command_char)
 
 	std::string nick;
 	while(file >> nick)
-		auto_op.push_back(nick);
+		auto_op.push_back(utils::string_to_lower(nick));
 }
 
 void IRC::OPify::make_op(const std::string nick)
@@ -31,13 +31,10 @@ void IRC::OPify::handle(const IRC::core::packet_t &input)
 	if(input.size() == 3 && input[1] == "JOIN")
 	{
 		int pos = input[0].find('!');
-		std::string nick = input[0].substr(2, pos - 2);
-		std::cout << nick << std::endl;
+		std::string nick = utils::string_to_lower(input[0].substr(2, pos - 2));
 
 		if(std::find(auto_op.begin(), auto_op.end(), nick) == auto_op.end())
 			return;
-
-		std::cout << "found nick" << std::endl;
 
 		make_op(nick);
 	}

@@ -1,4 +1,5 @@
 #include <string>
+#include <algorithm>
 
 #include "utils.h"
 #include "IRC_types.h"

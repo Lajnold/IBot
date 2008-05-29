@@ -43,16 +43,16 @@ void IRCBot::connect()
 	send("NICK " + settings.nickname);
 	send("USER " + settings.nickname + " 0 * :" + settings.nickname);
 
+	send("JOIN " + get_channel());
+}
+
+std::string IRCBot::get_channel()
+{
 	std::string channel = settings.channel;
 	if(channel.size() > 0 && channel[0] != '#')
 		channel = '#' + channel;
 
-	send("JOIN " + channel);
-}
-
-const std::string &IRCBot::get_channel()
-{
-	return settings.channel;
+	return channel;
 }
 
 const std::string &IRCBot::get_nickname()
@@ -72,7 +72,7 @@ void IRCBot::send(std::string message)
 
 void IRCBot::say(const std::string &message)
 {
-	std::string channel_message = "PRIVMSG " + settings.channel + " :" + message;
+	std::string channel_message = "PRIVMSG " + get_channel() + " :" + message;
 	send(channel_message);
 }
 

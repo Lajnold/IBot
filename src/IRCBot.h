@@ -38,7 +38,7 @@ namespace IRC
 			~IRCBot();
 			
 			const std::string &get_nickname();
-			const std::string &get_channel();
+			std::string get_channel();
 			const std::string &get_owner();
 			
 			void say(const std::string &input);

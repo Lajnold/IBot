@@ -42,7 +42,12 @@ void IRCBot::connect()
 	
 	send("NICK " + settings.nickname);
 	send("USER " + settings.nickname + " 0 * :" + settings.nickname);
-	send("JOIN " + settings.channel);
+
+	std::string channel = settings.channel;
+	if(channel.size() > 0 && channel[0] != '#')
+		channel = '#' + channel;
+
+	send("JOIN " + channel);
 }
 
 const std::string &IRCBot::get_channel()

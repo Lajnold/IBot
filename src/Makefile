@@ -6,17 +6,17 @@ BINARY = Bot
 OBJDIR = ../objs
 DEPDIR = deps
 
-SRCS = main.cpp\
-	BotOptions.cpp\
-	IRCBot.cpp\
-	Socket.cpp\
-	CommandHandler.cpp\
-	Message.cpp\
-	utils.cpp\
-	Time.cpp\
-	UserStats.cpp\
-	DUMIIFinger.cpp\
-	Say.cpp\
+SRCS = main.cpp \
+	BotOptions.cpp \
+	IRCBot.cpp \
+	Socket.cpp \
+	CommandHandler.cpp \
+	Message.cpp \
+	utils.cpp \
+	Time.cpp \
+	UserStats.cpp \
+	DUMIIFinger.cpp \
+	Say.cpp \
 	OPify.cpp
 
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)

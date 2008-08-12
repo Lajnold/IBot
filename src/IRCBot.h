@@ -1,3 +1,11 @@
+namespace IRC
+{
+	namespace core
+	{
+		class IRCBot;
+	}
+}
+
 #ifndef IRC_BOT_H
 #define IRC_BOT_H
 

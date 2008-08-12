@@ -1,16 +1,23 @@
+namespace IRC
+{
+	namespace core
+	{
+		class CommandHandler;
+	}
+}
+
 #ifndef IRC_COMMANDHANDLER_H
 #define IRC_COMMANDHANDLER_H
 
 #include <string>
 
+#include "IRCBot.h"
 #include "IRC_types.h"
 
 namespace IRC
 {
 	namespace core
 	{
-		class IRCBot;
-		
 		class CommandHandler
 		{
 			const char command_char;

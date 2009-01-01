@@ -38,7 +38,7 @@ IRCBot::~IRCBot()
 
 void IRCBot::connect()
 {
-	socket.connect(settings.address.c_str(), settings.port);
+	socket.connect(settings.address, settings.port);
 	
 	send("NICK " + settings.nickname);
 	send("USER " + settings.nickname + " 0 * :" + settings.nickname);

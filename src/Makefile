@@ -3,7 +3,7 @@ CFLAGS = -Wall
 LIBS = -lboost_program_options
 
 BINARY = Bot
-OBJDIR = ../objs
+OBJDIR = objs
 DEPDIR = deps
 
 SRCS = main.cpp \
@@ -29,6 +29,12 @@ $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+clean:
+	@echo Cleaning up src/
+	rm -rf $(DEPDIR)
+	rm -rf $(OBJDIR)
+	rm -rf $(BINARY)
+
 # Dependency handling
 $(DEPDIR)/%.d: %.cpp
 	@mkdir -p $(DEPDIR)
@@ -36,4 +42,3 @@ $(DEPDIR)/%.d: %.cpp
 	@$(CC) -MM $< -MT $(OBJDIR)/$(<:.cpp=.o) -MF $@
 
 include $(SRCS:%.cpp=$(DEPDIR)/%.d)
-

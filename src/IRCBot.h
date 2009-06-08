@@ -12,6 +12,8 @@ namespace IRC
 #include <string>
 #include <vector>
 
+#include <boost/shared_ptr.hpp>
+
 #include "BotOptions.h"
 #include "IRC_types.h"
 #include "Socket.h"
@@ -29,7 +31,7 @@ namespace IRC
 			
 			const BotOptions settings;
 			
-			std::vector<CommandHandler *> command_handlers;
+			std::vector<boost::shared_ptr<CommandHandler> > command_handlers;
 
 			void connect();
 			void send(std::string message);
@@ -43,7 +45,6 @@ namespace IRC
 		public:
 
 			IRCBot(const BotOptions &options);
-			~IRCBot();
 			
 			const std::string &get_nickname();
 			std::string get_channel();

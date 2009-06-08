@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/shared_ptr.hpp>
+
 #include "IRCBot.h"
 #include "BotOptions.h"
 #include "IRC_types.h"
@@ -15,26 +17,17 @@
 #include "OPify.h"
 
 using namespace IRC::core;
+using boost::shared_ptr;
 
 IRCBot::IRCBot(const BotOptions &options)
 	: running(true), socket("\r\n"), settings(options)
 {
-	command_handlers.push_back(new UserStats(this, settings.command_char));
-	command_handlers.push_back(new Time(this, settings.command_char));
-	command_handlers.push_back(new DUMIIFinger(this, settings.command_char));
-	command_handlers.push_back(new Say(this, settings.command_char));
-	command_handlers.push_back(new OPify(this, settings.command_char));
+	command_handlers.push_back(shared_ptr<CommandHandler>(new UserStats(this, settings.command_char)));
+	command_handlers.push_back(shared_ptr<CommandHandler>(new Time(this, settings.command_char)));
+	command_handlers.push_back(shared_ptr<CommandHandler>(new DUMIIFinger(this, settings.command_char)));
+	command_handlers.push_back(shared_ptr<CommandHandler>(new Say(this, settings.command_char)));
+	command_handlers.push_back(shared_ptr<CommandHandler>(new OPify(this, settings.command_char)));
 };
-
-IRCBot::~IRCBot()
-{
-	for(std::vector<CommandHandler *>::iterator iter = command_handlers.begin();
-		iter != command_handlers.end();)
-	{
-		delete *iter;
-		iter = command_handlers.erase(iter);
-	}
-}
 
 void IRCBot::connect()
 {
@@ -99,7 +92,7 @@ bool IRCBot::handle_ping(const packet_t &input)
 
 bool IRCBot::handle_msg(const packet_t &input)
 {
-	for(std::vector<CommandHandler *>::iterator iter = command_handlers.begin();
+	for(std::vector<shared_ptr<CommandHandler> >::iterator iter = command_handlers.begin();
 		iter != command_handlers.end();
 		iter++)
 		(*iter)->handle(input);

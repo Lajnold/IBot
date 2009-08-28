@@ -16,22 +16,19 @@ using namespace IRC::core;
 
 Socket::Socket(const std::string &line_ending) : line_ending(line_ending)
 {
-	m_socket = socket(PF_INET, SOCK_STREAM, 0);
+	m_socket = ::socket(PF_INET, SOCK_STREAM, 0);
 	if(m_socket == -1)
-	{
-		int err = errno;
-		throw std::runtime_error(std::strerror(err));
-	}
+		throw std::runtime_error(std::strerror(errno));
 }
 
 Socket::~Socket()
 {
-	close(m_socket);
+	::close(m_socket);
 }
 
 void Socket::connect(const std::string &address, const unsigned int port)
 {
-	hostent *he = gethostbyname(address.c_str());
+	hostent *he = ::gethostbyname(address.c_str());
 	if(!he)
 		throw ConnectionError("Could not find host");
 
@@ -42,10 +39,7 @@ void Socket::connect(const std::string &address, const unsigned int port)
 	std::memset(&addr.sin_zero, 0, 8);
 
 	if(::connect(m_socket, (sockaddr *)&addr, sizeof(sockaddr)) == -1)
-	{
-		int err = errno;
-		throw ConnectionError(std::strerror(err));
-	}
+		throw ConnectionError(std::strerror(errno));
 }
 
 void Socket::send(const std::string &data)

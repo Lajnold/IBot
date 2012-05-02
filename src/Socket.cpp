@@ -88,5 +88,5 @@ std::string Socket::get_finished_packet()
 
 void Socket::clear_finished_packet()
 {
-	buffer = buffer.substr(buffer.find(line_ending) + 1);
+	buffer = buffer.substr(buffer.find(line_ending) + line_ending.size());
 }

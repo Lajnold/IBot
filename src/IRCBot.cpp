@@ -76,7 +76,7 @@ void IRCBot::raw_command(const std::string &command)
 
 bool IRCBot::handle_ping(const packet_t &input)
 {
-	if(input.size() < 1 || input[0] != "\nPING")
+	if(input.size() < 1 || input[0] != "PING")
 		return false;
 	
 	std::string message = "PONG ";

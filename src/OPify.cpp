@@ -30,7 +30,6 @@ void IRC::OPify::handle(const IRC::core::packet_t &input)
 {
 	if(input.size() == 3 && input[1] == "JOIN")
 	{
-		int pos = input[0].find('!');
 		std::string nick = utils::string_to_lower(get_user(input));
 
 		if(std::find(auto_op.begin(), auto_op.end(), nick) != auto_op.end())

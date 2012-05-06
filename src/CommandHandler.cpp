@@ -72,5 +72,5 @@ std::string CommandHandler::get_user(const packet_t &input)
 		return "";
 	
 	size_t pos = input[0].find("!");
-	return input[0].substr(2, pos - 2);
+	return input[0].substr(1, pos - 1);
 }

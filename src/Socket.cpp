@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <unistd.h>
 
 #include "Socket.h"
 #include "IRC_types.h"
@@ -52,7 +53,7 @@ void Socket::send(const std::string &data)
 	::send(m_socket, to_send.c_str(), to_send.size(), 0);
 }
 
-void Socket::receive(packet_t &out)
+void Socket::receive(StringList &out)
 {
 	char buf[2048];
 	int len = recv(m_socket, buf, sizeof(buf), 0);

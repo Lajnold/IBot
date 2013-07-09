@@ -4,11 +4,12 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "IRCBot.h"
-#include "BotOptions.h"
 #include "IRC_types.h"
+#include "BotOptions.h"
 #include "ConnectionError.h"
 #include "utils.h"
+
+#include "IRCBot.h"
 
 #include "Time.h"
 #include "UserStats.h"
@@ -43,7 +44,9 @@ std::string IRCBot::get_channel()
 {
 	std::string channel = settings.channel;
 	if(channel.size() > 0 && channel[0] != '#')
+	{
 		channel = '#' + channel;
+	}
 
 	return channel;
 }
@@ -74,44 +77,54 @@ void IRCBot::raw_command(const std::string &command)
 	send(command);
 }
 
-bool IRCBot::handle_ping(const packet_t &input)
+bool IRCBot::handle_ping(const Message& msg)
 {
-	if(input.size() < 1 || input[0] != "PING")
+	// Input format: "PING :<server1> [<server2>]"
+	// Return format: "PONG <server1>"
+	// Note that this code currently only handles <server1>.
+
+	StringList tokenized_message = msg.get_tokenized_message();
+	if(tokenized_message.empty() || tokenized_message[0] != "PING")
+	{
 		return false;
-	
-	std::string message = "PONG ";
-	if(input.size() >= 2)
-		message += input[1].substr(1);
+	}
+
+	std::string return_message = "PONG ";
+	if(tokenized_message.size() >= 2)
+	{
+		return_message += tokenized_message[1].substr(1);
+	}
 	else
-		message += "dummy.server";
-	
-	send(message);
+	{
+		return_message += "dummy.server";
+	}
+
+	send(return_message);
 	
 	return true;
 }
 
-bool IRCBot::handle_msg(const packet_t &input)
+bool IRCBot::handle_message(const Message& msg)
 {
-	for(std::vector<shared_ptr<CommandHandler> >::iterator iter = command_handlers.begin();
-		iter != command_handlers.end();
-		iter++)
-		(*iter)->handle(input);
-	
+	for(auto it = command_handlers.begin(); it != command_handlers.end(); it++)
+	{
+		(*it)->handle(msg);
+	}
+
 	return true;
 }
 
 void IRCBot::parse_IRC_message(const std::string &input)
 {
-	packet_t parameters;
-	IRC::utils::split_string(parameters, input, " ");
+	Message msg(input);
 	
-	if(handle_ping(parameters)) { }
-	else if(handle_msg(parameters)) { }
+	if(handle_ping(msg)) { }
+	else if(handle_message(msg)) { }
 }
 
-void IRCBot::parse_data(const packet_t &input)
-{		
-	for(packet_t::const_iterator iter = input.begin(); iter != input.end(); iter++)
+void IRCBot::parse_data(const StringList &input)
+{
+	for(auto iter = input.cbegin(); iter != input.cend(); ++iter)
 	{
 		std::cout << *iter << std::endl;
 		parse_IRC_message(*iter);
@@ -130,8 +143,7 @@ void IRCBot::run()
 		running = false;
 	}
 	
-	packet_t messages;	
-	
+	StringList messages;	
 	while(running)
 	{
 		messages.clear();

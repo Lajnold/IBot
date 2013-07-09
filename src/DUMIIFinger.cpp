@@ -13,17 +13,17 @@
 using namespace IRC;
 using namespace IRC::core;
 
-DUMIIFinger::DUMIIFinger(::IRCBot *bot, const char command_char) : CommandHandler(bot, command_char)
+DUMIIFinger::DUMIIFinger(::IRCBot *bot, const char command_char)
+  : CommandHandler(bot, command_char)
 {
 	
 }
 
-void DUMIIFinger::handle(const ::packet_t &input)
+void DUMIIFinger::handle(const core::Message& msg)
 {
-	if(is_command(input, "who"))
+	if(is_command(msg, "who"))
 	{
-		packet_t list;
-		fill_who_list(list);
+		StringList list = get_who_list();
 		
 		if(list.size() < 3)
 		{
@@ -31,33 +31,38 @@ void DUMIIFinger::handle(const ::packet_t &input)
 			return;
 		}
 		
+		// Remove empty lines.
 		list.erase(std::remove(list.begin(), list.end(), ""));
 
-		for(packet_t::const_iterator iter = list.begin();
-			iter != list.end();
-			iter++)
-			bot->say(*iter);
+		for(auto it = list.cbegin(); it != list.cend(); ++it)
+		{
+			bot->say(*it);
+		}
 	}
 }
 
-void DUMIIFinger::fill_who_list(::packet_t &list)
+IRC::StringList DUMIIFinger::get_who_list()
 {
+	StringList result;
+
 	try
 	{
 		Socket socket("\n");
 		socket.connect("dum.acc.umu.se", 79);
 
 		usleep(250000);
-		socket.receive(list);
+		socket.receive(result);
 
-		if(list.size() < 3)
+		if(result.size() < 3)
 		{
 			usleep(100000);
-			socket.receive(list);
+			socket.receive(result);
 		}
 	}
 	catch(const ConnectionError &e)
 	{
-
+		// Do nothing
 	}
+
+	return result;
 }

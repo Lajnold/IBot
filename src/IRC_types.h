@@ -6,10 +6,16 @@
 
 namespace IRC
 {
-	namespace core
+	typedef std::vector<std::string> StringList;
+
+	struct User
 	{
-		typedef std::vector<std::string> packet_t;
-	}
+		std::string nick;
+		std::string host;
+
+		User() {};
+		User(std::string nick, std::string host) : nick(nick), host(host) {};
+	};
 }
 
 #endif

@@ -10,41 +10,36 @@
 
 namespace IRC
 {
-	class UserStats : public IRC::core::CommandHandler
+	class UserStats : public core::CommandHandler
 	{
-		struct Stats
+		struct StatsUser
 		{
-			unsigned int word_count;
-			
-			Stats() : word_count(0) { };
+			StatsUser() {};
+			StatsUser(const std::string& nick, int word_count)
+			  : nick(nick), word_count(word_count) { };
+
+			std::string nick;
+			int word_count;
 		};
 
-		struct User
-		{
-			User(std::string name, Stats stats) : name(name), stats(stats) { };
-			std::string name;
-			Stats stats;
-		};
+		typedef std::vector<StatsUser> UserList;
+		typedef std::map<std::string, StatsUser> UserMap;
 		
-		typedef std::map<std::string, Stats> user_map_type;
-		
-		user_map_type users;
+		UserMap user_map;
 		const std::string filename;
 		
-		unsigned int get_word_count_in_msg(const IRC::core::packet_t &input);
-		unsigned int get_word_count(std::string user);
-		unsigned int get_user_word_count(const IRC::core::packet_t &input);
-		void fill_top_list(IRC::core::packet_t &out, size_t count);
+		int get_user_word_count(const std::string& nick);
+		UserList get_top_list(int count) const;
 		
-		void update_user_word_count(const IRC::core::packet_t &input);
-		void increase_word_count(std::string user, unsigned int count);
+		void update_user_word_count(const std::string& nick, const std::string& message);
+		void save_word_count() const;
 
-		struct WordCountSort
+		struct WordCountComparer
 		{
-			bool operator()(const User &lhs, const User &rhs)
+			bool operator()(const StatsUser &lhs, const StatsUser &rhs)
 			{
-				int lhs_count = lhs.stats.word_count;
-				int rhs_count = rhs.stats.word_count;
+				int lhs_count = lhs.word_count;
+				int rhs_count = rhs.word_count;
 
 				if(lhs_count > rhs_count)
 					return true;
@@ -56,9 +51,9 @@ namespace IRC
 		};
 		
 	public:
-		UserStats(IRC::core::IRCBot *bot, const char command_char);
+		UserStats(core::IRCBot *bot, const char command_char);
 		
-		void handle(const IRC::core::packet_t &input);
+		void handle(const core::Message& msg);
 	};
 }
 

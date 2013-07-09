@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -Wall -std=gnu++0x -g
 LIBS = -lboost_program_options
 
 BINARY = Bot
@@ -12,7 +12,6 @@ SRCS = main.cpp \
 	Socket.cpp \
 	CommandHandler.cpp \
 	Message.cpp \
-	utils.cpp \
 	Time.cpp \
 	UserStats.cpp \
 	DUMIIFinger.cpp \

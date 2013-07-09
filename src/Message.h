@@ -3,24 +3,37 @@
 
 #include <string>
 
+#include "IRC_types.h"
+
 namespace IRC
 {
 	namespace core
 	{
+		enum MessageType
+		{
+			JOIN,
+			PRIVMSG,
+			OTHER
+		};
+
 		class Message
 		{
-			const std::string message;
-			const char cmd_char;
-
-			enum message_type
-			{
-				MESSAGE_TYPE_MSG = 0x1,
-				MESSAGE_TYPE_CHANNEL_MSG = 0x2,
-				MESSAGE_TYPE_CMD = 0x4
-			};
+			const std::string raw_message;
+			const StringList tokenized_message;
 
 		public:
-			Message(const std::string &msg);
+			Message(const std::string& raw_message);
+
+			bool is_message() const;
+
+			MessageType get_type() const;
+			std::string get_type_string() const;
+
+			StringList get_tokenized_message() const;
+			std::string get_raw_message() const;
+			std::string get_message() const;
+			std::string get_channel() const;
+			User get_user() const;
 		};
 	}
 }

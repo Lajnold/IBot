@@ -9,8 +9,8 @@
 #include "IRC_types.h"
 #include "utils.h"
 
-IRC::OPify::OPify(IRC::core::IRCBot *bot, const char command_char)
-	: IRC::core::CommandHandler(bot, command_char)
+IRC::OPify::OPify(core::IRCBot *bot, const char command_char)
+	: core::CommandHandler(bot, command_char)
 {
 	std::ifstream file("auto_op.txt");
 	if(!file)
@@ -18,44 +18,52 @@ IRC::OPify::OPify(IRC::core::IRCBot *bot, const char command_char)
 
 	std::string nick;
 	while(file >> nick)
-		auto_op.push_back(utils::string_to_lower(nick));
+	{
+		auto_op.push_back(utils::to_lower(nick));
+	}
 }
 
-void IRC::OPify::make_op(const std::string nick)
+void IRC::OPify::make_op(const std::string& nick)
 {
 	bot->raw_command("MODE " + bot->get_channel() + " +o " + nick);
 }
 
-void IRC::OPify::handle(const IRC::core::packet_t &input)
+bool IRC::OPify::should_auto_op(const std::string& nick)
 {
-	if(input.size() == 3 && input[1] == "JOIN")
-	{
-		std::string nick = utils::string_to_lower(get_user(input));
+	return utils::contains(auto_op, utils::to_lower(nick));
+}
 
-		if(std::find(auto_op.begin(), auto_op.end(), nick) != auto_op.end())
-			make_op(nick);
+void IRC::OPify::handle(const core::Message& msg)
+{
+	if(msg.get_type() == IRC::core::JOIN)
+	{
+		User user = msg.get_user();
+		if (should_auto_op(user.nick))
+		{
+			make_op(user.nick);
+		}
 
 		return;
 	}
 
-	std::string owner = IRC::utils::string_to_lower(bot->get_owner());
-	if(!owner.empty() && (owner != IRC::utils::string_to_lower(get_user(input))))
-		return;
-
-	if(is_command(input, "opify"))
+	if(is_command(msg, "opify"))
 	{
-		std::string params = get_message(input);
-		if(params.empty())
+		User user = msg.get_user();
+		std::string owner = utils::to_lower(bot->get_owner());
+		if(!owner.empty() && owner != utils::to_lower(user.nick))
+		{
 			return;
+		}
 
-		IRC::core::packet_t names;
-		IRC::utils::split_string(names, params, " ");
+		StringList params = get_command_parameters(msg);
+		if(params.empty())
+		{
+			return;
+		}
 
-		std::string channel = bot->get_channel();
-		
-		for(IRC::core::packet_t::const_iterator iter = names.begin();
-			iter != names.end();
-			iter++)
-			make_op(*iter);
+		for(auto it = params.begin(); it != params.end(); it++)
+		{
+			make_op(*it);
+		}
 	}
 }

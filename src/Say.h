@@ -7,12 +7,12 @@
 
 namespace IRC
 {
-	class Say : public IRC::core::CommandHandler
+	class Say : public core::CommandHandler
 	{
 	public:
-		Say(IRC::core::IRCBot *bot, const char command_char);
+		Say(core::IRCBot *bot, const char command_char);
 
-		void handle(const IRC::core::packet_t &input);
+		void handle(const core::Message& msg);
 	};
 }
 

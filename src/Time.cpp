@@ -8,14 +8,14 @@
 
 using namespace IRC;
 
-Time::Time(IRC::core::IRCBot *bot, const char command_char) : CommandHandler(bot, command_char)
+Time::Time(core::IRCBot *bot, const char command_char) : CommandHandler(bot, command_char)
 {
 
 }
 	
-void Time::handle(const IRC::core::packet_t &input)
+void Time::handle(const core::Message& msg)
 {
-	if(is_command(input, "time"))
+	if(is_command(msg, "time"))
 	{
 		std::string message = get_time_string();
 		bot->say(message);

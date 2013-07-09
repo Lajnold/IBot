@@ -13,13 +13,18 @@ Say::Say(::IRCBot *bot, const char command_char) : CommandHandler(bot, command_c
 
 }
 
-void Say::handle(const ::packet_t &input)
+void Say::handle(const core::Message& msg)
 {
-	std::string owner = utils::string_to_lower(bot->get_owner());
-	if((owner.empty() || owner == utils::string_to_lower(get_user(input))) && is_command(input, "say"))
-	{
-		std::string message = get_message(input);
-		if(message.size() > 5)
-			bot->say(message.substr(5));
+	std::string owner = utils::to_lower(bot->get_owner());
+	if (is_command(msg, "say")) {
+		User user = msg.get_user();
+		if((owner.empty() || owner == utils::to_lower(user.nick)))
+		{
+			std::string message = get_command_parameter_string(msg);
+			if (!message.empty())
+			{
+				bot->say(message);
+			}
+		}
 	}
 }

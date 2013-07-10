@@ -1,0 +1,6 @@
+- Dynamic plugin loading
+- Better network handling, using select() or something.
+- Something better than the two timeouts in DUMIIFinger for making sure that all data is received.
+- IPv6 support, if missing
+- Auto-reconnect
+- Top Mud Sites position

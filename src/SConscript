@@ -1,0 +1,25 @@
+src = Split("""
+	BotOptions.cpp
+	CommandHandler.cpp
+	DUMIIFinger.cpp
+	IRCBot.cpp
+	Message.cpp
+	OPify.cpp
+	Say.cpp
+	Socket.cpp
+	Time.cpp
+	UserStats.cpp
+	main.cpp
+""")
+
+libs = Split("""
+	boost_program_options
+""")
+
+ccflags = Split("""
+	-std=gnu++0x
+	-Wall
+	-g
+""")
+
+Program("Bot", src, LIBS=libs, CCFLAGS=ccflags)

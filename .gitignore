@@ -1,3 +1,5 @@
+# Built files
 src/Bot
-src/deps
-src/objs
+
+# Scons
+.sconsign.dblite

@@ -1,0 +1,3 @@
+SConscript(Split("""
+	src/SConscript
+"""))

@@ -98,7 +98,8 @@ namespace utils
 	template <typename ContT, typename ValT>
 	void remove_val(ContT& cont, const ValT& val)
 	{
-		cont.erase(std::remove(std::begin(cont), std::end(cont), val));
+		cont.erase(std::remove(std::begin(cont), std::end(cont), val),
+		           std::end(cont));
 	}
 
 	template <typename ContT, typename PredT>

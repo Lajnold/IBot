@@ -2,26 +2,33 @@
 #include <string>
 #include <vector>
 
+#include <boost/asio.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread/thread.hpp>
 
-#include "IRC_types.h"
 #include "BotOptions.h"
 #include "ConnectionError.h"
+#include "IRC_types.h"
 #include "utils.h"
+
+#include "DUMIIFinger.h"
+#include "OPify.h"
+#include "Say.h"
+#include "Time.h"
+#include "UserStats.h"
 
 #include "IRCBot.h"
 
-#include "Time.h"
-#include "UserStats.h"
-#include "DUMIIFinger.h"
-#include "Say.h"
-#include "OPify.h"
-
 using namespace IRC::core;
+
 using boost::shared_ptr;
+using boost::system::error_code;
+namespace asio = boost::asio;
 
 IRCBot::IRCBot(const BotOptions &options)
-	: running(true), socket("\r\n"), settings(options)
+	: running(true), settings(options), socket(io_service)
 {
 	command_handlers.push_back(shared_ptr<CommandHandler>(new UserStats(this, settings.command_char)));
 	command_handlers.push_back(shared_ptr<CommandHandler>(new Time(this, settings.command_char)));
@@ -32,23 +39,41 @@ IRCBot::IRCBot(const BotOptions &options)
 
 void IRCBot::connect()
 {
-	socket.connect(settings.address, settings.port);
-	
-	send("NICK " + settings.nickname);
-	send("USER " + settings.nickname + " 0 * :" + settings.nickname);
+	asio::ip::tcp::resolver resolver(io_service);
+	asio::ip::tcp::resolver::query query(settings.address, std::to_string(settings.port));
+	asio::async_connect(socket, resolver.resolve(query),
+	                    boost::bind(&IRCBot::handle_connected, this,
+	                                asio::placeholders::error,
+	                                asio::placeholders::iterator));
+}
 
-	send("JOIN " + get_channel());
+void IRCBot::handle_connected(const error_code& ec,
+                              asio::ip::tcp::resolver::iterator iterator)
+{
+	if (!ec)
+	{
+		std::cout << "Connected\n";
+
+		std::string nick = get_nickname();
+		std::string channel = get_channel();
+
+		std::string message = 
+		      "NICK " + nick + "\r\n"
+		    + "USER " + nick + " 0 * :" + nick + "\r\n"
+		    + "JOIN " + channel + "\r\n";
+		send(message);
+
+		read_next_packet();
+	}
+	else
+	{
+		std::cout << "Connect failed\n";
+	}
 }
 
 std::string IRCBot::get_channel()
 {
-	std::string channel = settings.channel;
-	if(channel.size() > 0 && channel[0] != '#')
-	{
-		channel = '#' + channel;
-	}
-
-	return channel;
+	return settings.channel;
 }
 
 const std::string &IRCBot::get_nickname()
@@ -61,20 +86,28 @@ const std::string &IRCBot::get_owner()
 	return settings.owner;
 }
 
-void IRCBot::send(std::string message)
+void IRCBot::queue_message(const std::string& message)
 {
-	socket.send(message);
+	asio::async_write(socket, asio::buffer(message),
+	                  boost::bind(&IRCBot::handle_packet_sent, this,
+	                              asio::placeholders::error,
+	                              asio::placeholders::bytes_transferred));
 }
 
 void IRCBot::say(const std::string &message)
 {
-	std::string channel_message = "PRIVMSG " + get_channel() + " :" + message;
+	std::string channel_message = "PRIVMSG " + get_channel() + " :" + message + "\r\n";
 	send(channel_message);
 }
 
-void IRCBot::raw_command(const std::string &command)
+void IRCBot::send(const std::string &command)
 {
-	send(command);
+	std::string to_send = command;
+	if (!boost::ends_with(to_send, "\r\n"))
+	{
+		to_send += "\r\n";
+	}
+	queue_message(to_send);
 }
 
 bool IRCBot::handle_ping(const Message& msg)
@@ -114,7 +147,7 @@ bool IRCBot::handle_message(const Message& msg)
 	return true;
 }
 
-void IRCBot::parse_IRC_message(const std::string &input)
+void IRCBot::handle_packet(const std::string &input)
 {
 	Message msg(input);
 	
@@ -122,41 +155,39 @@ void IRCBot::parse_IRC_message(const std::string &input)
 	else if(handle_message(msg)) { }
 }
 
-void IRCBot::parse_data(const StringList &input)
+void IRCBot::handle_packet_sent(const error_code& e, size_t n_bytes)
 {
-	for(auto iter = input.cbegin(); iter != input.cend(); ++iter)
+}
+
+void IRCBot::handle_packet_received(const error_code& err, size_t n_bytes)
+{
+	if(!err)
 	{
-		std::cout << *iter << std::endl;
-		parse_IRC_message(*iter);
+		std::istream is(&packet_read_buffer);
+		std::vector<char> buf(n_bytes);
+		is.read(&buf[0], n_bytes);
+
+		// Use the data except for the trailing \r\n.
+		std::string packet(buf.begin(), buf.end() - 2);
+		std::cout << "Received packet: " << packet << "\n";
+		handle_packet(packet);
+
+		read_next_packet();
 	}
+	else
+	{
+		throw std::runtime_error("Receive error");
+	}
+}
+
+void IRCBot::read_next_packet()
+{
+	asio::async_read_until(socket, packet_read_buffer, "\r\n",
+	                       boost::bind(&IRCBot::handle_packet_received, this, _1, _2));
 }
 
 void IRCBot::run()
 {	
-	try
-	{
-		connect();
-	}
-	catch(const ConnectionError &e)
-	{
-		std::cout << "Connection failed: " << e.what() << std::endl;
-		running = false;
-	}
-	
-	StringList messages;	
-	while(running)
-	{
-		messages.clear();
-		
-		try
-		{
-			socket.receive(messages);
-			parse_data(messages);
-		}
-		catch(const ConnectionError &e)
-		{
-			std::cout << "Connection broken" << std::endl;
-			running = false;
-		}
-	}
+	connect();
+	io_service.run();
 }

@@ -25,7 +25,7 @@ IRC::OPify::OPify(core::IRCBot *bot, const char command_char)
 
 void IRC::OPify::make_op(const std::string& nick)
 {
-	bot->raw_command("MODE " + bot->get_channel() + " +o " + nick);
+	bot->send("MODE " + bot->get_channel() + " +o " + nick + "\r\n");
 }
 
 bool IRC::OPify::should_auto_op(const std::string& nick)

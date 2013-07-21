@@ -12,12 +12,12 @@ namespace IRC
 #include <string>
 #include <vector>
 
+#include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "BotOptions.h"
-#include "IRC_types.h"
-#include "Socket.h"
 #include "CommandHandler.h"
+#include "IRC_types.h"
 
 namespace IRC
 {
@@ -26,21 +26,27 @@ namespace IRC
 		class IRCBot
 		{
 			bool running;
-			
-			Socket socket;
-			
+
 			const BotOptions settings;
+
+			boost::asio::io_service io_service;
+			boost::asio::ip::tcp::socket socket;
+			boost::asio::streambuf packet_read_buffer;
+			//std::vector<unsigned char> packet_read_buffer;
 			
 			std::vector<boost::shared_ptr<CommandHandler> > command_handlers;
 
 			void connect();
-			void send(std::string message);
+			void queue_message(const std::string& message);
 			
-			void parse_IRC_message(const std::string &input);
-			void parse_data(const StringList &input);
-			
+			void handle_packet(const std::string &input);
 			bool handle_ping(const Message& msg);
 			bool handle_message(const Message& msg);
+
+			void handle_connected(const boost::system::error_code& ec, boost::asio::ip::tcp::resolver::iterator iterator);
+			void handle_packet_sent(const boost::system::error_code& e, size_t n_bytes);
+			void handle_packet_received(const boost::system::error_code& e, size_t n_bytes);
+			void read_next_packet();
 			
 		public:
 
@@ -51,7 +57,7 @@ namespace IRC
 			const std::string &get_owner();
 			
 			void say(const std::string &input);
-			void raw_command(const std::string &command);
+			void send(const std::string &command);
 			
 			void run();
 		};

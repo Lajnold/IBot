@@ -14,6 +14,9 @@ src = Split("""
 
 libs = Split("""
 	boost_program_options
+	boost_system
+	boost_thread
+	pthread
 """)
 
 ccflags = Split("""

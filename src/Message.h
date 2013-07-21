@@ -35,6 +35,17 @@ namespace IRC
 			std::string get_channel() const;
 			User get_user() const;
 		};
+
+		// Administrative commands
+		std::string make_deop_command(const std::string& nick);
+		std::string make_join_command(const std::string& channel);
+		std::string make_nick_command(const std::string& nick);
+		std::string make_op_command(const std::string& nick);
+		std::string make_part_command(const std::string& channel);
+		std::string make_user_command(const std::string& user, int mode, const std::string& realname);
+
+		// Other commands
+		std::string make_privmsg_command(const std::string& target, const std::string& message);
 	}
 }
 

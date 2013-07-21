@@ -1,8 +1,23 @@
 #include <iostream>
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/program_options.hpp>
 
 #include "BotOptions.h"
+
+namespace
+{
+
+void validate_options(IRC::core::BotOptions& options)
+{
+	if (!boost::starts_with(options.channel, "#"))
+	{
+		options.channel = "#" + options.channel;
+	}
+}
+
+} // Anonymous namespace
+
 
 bool IRC::core::parse_commandline(int argc, char *argv[], BotOptions &options)
 {
@@ -38,6 +53,8 @@ bool IRC::core::parse_commandline(int argc, char *argv[], BotOptions &options)
 		std::cout << desc << std::endl;
 		return false;
 	}
+
+	validate_options(options);
 
 	return true;
 }

@@ -65,7 +65,7 @@ std::string IRC::core::Message::get_message() const
 
 	// The actual message starts with the 4th word.
 	// The 4th word in turn starts with a ':', which should be skipped over.
-	// The +2 here is for the found ' ' and the ':'.
+	// The +2 here is for the word-boundary (' ') and the ':'.
 	auto msg_start_it = utils::find_nth(raw_message, ' ', 3) + 2;
 	return std::string(msg_start_it, raw_message.end());
 }
